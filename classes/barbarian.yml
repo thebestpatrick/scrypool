@@ -1,0 +1,25 @@
+class skills:
+- Acrobatics
+- Climb
+- Craft
+- Handle Animal
+- Intimidate
+- Knowledge (nature)
+- Perception
+- Ride
+- Survival
+- Swim
+hit die: 12
+level 1:
+  baseattack: 1
+  fortsave: 2
+  refsave: 0
+  special:
+  - Fast movement
+  - rage
+  willsave: 0
+prefstats:
+- ST
+- CN
+skills per rank: 4
+starting gp: 3d6 x 10 gp
