@@ -1,0 +1,21 @@
+name: Ibabella Mason
+gender: f
+race: human
+symbol: a Blue Sejant Erect Leopard on Red a Bend Cotised on Silver
+class: barbarian
+ST: 18
+DX: 8
+CN: 15
+WS: 11
+IQ: 13
+CH: 12
+total hp: 14
+current hp: 14
+base attack: 1
+fort save: 2
+reflex save: 0
+will save: 0
+specials: 
+- Fast movement
+- rage
+
