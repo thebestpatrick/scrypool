@@ -1,24 +1,25 @@
-general feats:
-- Acrobatic
-- Alertness
-- Animal Affinity
-- Athletic
-- Deceitful
-- Deft Hands
-- Dodge
-- Endurance
-- Diehard
-- Fleet
-- Great Fortitude
-- Improved Great Fortitude
-- Leadership
-- Lightning Reflexes
-- Improved Lightning Reflexes
-- Lunge
-- Master Craftsman
-- Nimble Moves
-- Acrobatic Steps
-- Persuasive
-- Run
-- Self-Sufficient
-- Stealthy
+- name: Acrobatics
+  prereqs: null
+  benefits: +2 bonus on Acrobatics and Fly checks
+  tags: 
+  - mobility
+  - rogue
+- name: Agile Maneuvers
+  prereqs: null
+  benefits: Use your Dex bonus when calculating your CMB
+  tags:
+  - mobility
+  - fighter bonus
+  - melee
+- name: Athletic
+  prereqs: null
+  benefits: +2 bonus on Climb and Swim checks
+  tags:
+  - mobility
+- name: Combat Expertise
+  prereqs: IQ 13
+  benefits: Trade attack bonus for AC bonus
+  tags:
+  - defensive
+  - fighter bonus
+  - melee
