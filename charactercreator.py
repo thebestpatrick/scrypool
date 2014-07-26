@@ -73,11 +73,36 @@ def extra_kind_stat_roll(char_class):
 		if statsok:
 			break
 	return arr
-		
-def parse_specials(specials):
+
+def pick_feat(tags, character_file):
+	# Factor through a ton of crap to figure out what feats to pick
+	print("picking feat...")
+	
+def parse_specials(character_file):
 	# A function for taking race and class special features, like bonus feat,
 	# and turning them into the thing that they mean, then returning the proper 
 	# list of specials.
+	finlist = list()
+	characterfile = yaml.load(character_file)
+	
+	for s in characterfile["specials"]:
+		if isinstance(s, list):
+			alpha = random.choice(s)
+			characterfile["specials"].remove(s)
+			characterfile["specials"].append(alpha)
+		elif s == "bonus feat":
+			# pick a generic bonus feat
+			print("picking bonus feat")
+			characterfile["specials"].remove(s)
+		elif s == "fighter bonus feat":
+			# pick a fighter bonus feat
+			print("picking fighter bonus feat")
+			characterfile["specials"].remove(s)
+		else: 
+			# stuff
+			blah = 12 # doing nothing I guess?
+	return characterfile
+
 def yaml_create_character(char_race, char_class, mods):
 	# take care of this top line elsewhere
 	# finale = "!!python/object:__main__.entity\n"
@@ -135,7 +160,15 @@ def yaml_create_character(char_race, char_class, mods):
 	## when necessary, without cluttering the specials section of 
 	## the character sheet
 	## 
-	finale += "specials: \n" +  yaml.dump(classfile["level 1"]["special"], default_flow_style=False) + "\n"
+	
+	# check both race file and class file for their respective specials
+	speclist = classfile["level 1"]["special"] + racefile["race specials"]
+	finale += "specials: \n" +  yaml.dump(speclist, default_flow_style=False) + "\n"
+	
+	# Pass the string in for post processing, things like feat assignment and some 
+	# parsing work regarding it.
+	
+	finale = parse_specials(finale)
 
 	return finale
 	

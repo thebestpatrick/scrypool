@@ -1,11 +1,11 @@
 race specials:
   - bonus feat
   - skilled
-misc:
-  size: m
-  speed: 30
+size: medium
+speed: 30
 statmods:
   any: 2
+# now a bunch of crap about names and stuff 
 endings:
 - son
 - ton

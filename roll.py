@@ -40,3 +40,23 @@ def block_roll(block):
 	# probably using a stack, shunting yard algoritm and reverse polish notation.  
 	
 	# Blocks formatted like 2d6+27 or 3d20*4d4
+	
+	block = list(block)
+	result = list()
+	operators = list()
+	b = str()
+	block.reverse()
+	while True:
+		try:
+			a = block.pop()
+			if isinstance(a, int):
+				b += str(a)
+			else:
+				result.append(b)
+				b = str()
+				operators.append(a)
+		except:
+			break
+		print(a)
+
+	print(result)
