@@ -77,6 +77,13 @@ def extra_kind_stat_roll(char_class):
 def pick_feat(tags, character_file):
 	# Factor through a ton of crap to figure out what feats to pick
 	print("picking feat...")
+	feats = yaml.load(open("feats.yml"))
+	# Pick a random one.
+	prelimchoice = random.choice(feats)
+	# See if the choice makes sense, using tags
+	# check if all prereqs have been met.
+	finalchoice = prelimchoice["name"]
+	return finalchoice
 	
 def parse_specials(character_file):
 	# A function for taking race and class special features, like bonus feat,
@@ -90,10 +97,12 @@ def parse_specials(character_file):
 			alpha = random.choice(s)
 			characterfile["specials"].remove(s)
 			characterfile["specials"].append(alpha)
+			parse_specials(yaml.dump(characterfile))
 		elif s == "bonus feat":
 			# pick a generic bonus feat
 			print("picking bonus feat")
 			characterfile["specials"].remove(s)
+			characterfile["feats"].append(pick_feat("mobility", characterfile)) # FIXME since mobility isn't the only tag
 		elif s == "fighter bonus feat":
 			# pick a fighter bonus feat
 			print("picking fighter bonus feat")
@@ -103,7 +112,7 @@ def parse_specials(character_file):
 			blah = 12 # doing nothing I guess?
 	return characterfile
 
-def yaml_create_character(char_race, char_class, mods):
+def yaml_create_character(char_race, char_class, mods): # Seems rather slow and clunking, will need optimizing
 	# take care of this top line elsewhere
 	# finale = "!!python/object:__main__.entity\n"
 	genders = ["m", "f"]
@@ -114,6 +123,8 @@ def yaml_create_character(char_race, char_class, mods):
 	finale += "race: " + char_race + "\n"
 	finale += "symbol: " + fg.coatofarms_gen() + "\n"
 	finale += "class: " + char_class + "\n"
+	
+	finale += "feats: \n- " + pick_feat("mobility", finale) + "\n" # FIXME: don't always pass mobility
 	
 	#print(name)
 	## Roll stats
@@ -142,9 +153,14 @@ def yaml_create_character(char_race, char_class, mods):
 			lsjgklskl = 12
 		finale += stats[a] + ": " + str(adstats[a]) + "\n"
 		a += 1
+	
+	finale += "size: " + racefile["size"] + "\n"
+	finale += "speed: " + str(racefile["speed"]) + "\n"
+	
 	##
 	## this section could be chopped out and moved to the 'level up' function, since its just
-	## adding a level one of a class to an existing character. 
+	## adding a level one of a class to an existing character. Or it could handle it here 
+	## since it is kind of unique handling at level one.  
 	## 
 	
 	finale += "total hp: " + str(classfile["hit die"] + cfunc.nstatmod(adstats[2])) + "\n"
