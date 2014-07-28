@@ -82,11 +82,12 @@ def lists_overlap(a, b):
 
 def pick_feat(tags, character_file): # tags is a list
 	# Factor through a ton of crap to figure out what feats to pick
-	# characterfile = yaml.load(character_file)
-
+	characterfile = yaml.load(str(character_file))
+	
 	print("picking feat...")
 	feats = yaml.load(open("feats.yml"))
 	random.shuffle(feats) # randomize the list
+	
 	x = 0
 	lastscore = 0
 	lastchoice = feats[x]
@@ -97,10 +98,13 @@ def pick_feat(tags, character_file): # tags is a list
 		prelimscore = feats[x]["score"]
 		
 		x += 1 # change it before we start testing so the continues will work fine
+		
+		## WARNING!! ENTERING THE LAND OF HACKY BUG FIXING!! ## 
 		# if you already have the feat, skip it!  FIXME!  this section isn't throwing stuff out properly
 		# exception for handling first level blank feat lists.
+		# this was all committed and backed up so if I need to just throw it all out, its theoretically backed up
 		try:
-			if prelimchoice["name"] in character_file["feats"]:
+			if prelimchoice["name"] in characterfile["feats"]:
 				continue
 		except:
 			pass
@@ -116,9 +120,11 @@ def pick_feat(tags, character_file): # tags is a list
 			prelimscore += 70 # add a ton of points if you are specifically looking for this feat.
 			# mostly here for user specified tags I do think.
 			
-		if character_file["class"] in prelimchoice["tags"]:
+		if characterfile["class"] in prelimchoice["tags"]:
 			prelimscore += 20 # if the feat is tagged for your class, bonus.
 		
+		# final score
+		print(str(prelimscore) + " : " + str(prelimchoice["name"]))
 		if prelimscore == lastscore and roll.roll(1,2) == 2:
 			# if two feats score the same, flip a coin to decide new or old
 			lastchoice = prelimchoice
