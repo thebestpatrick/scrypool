@@ -1,10 +1,19 @@
+# Informations
+## name: the name of the feat
+## score: used in the program, a general ranking of feat quality.
+## benefits: an overview of the benefits
+## tags: allowing users to pass information on the general build
+#    they want, or at least a theme to shoot for.  also indicates
+#    whether fighter bonus is viable here.
 - name: Acrobatics
+  score: 0
   prereqs: null
   benefits: +2 bonus on Acrobatics and Fly checks
   tags: 
   - mobility
   - rogue
 - name: Agile Maneuvers
+  score: 0
   prereqs: null
   benefits: Use your Dex bonus when calculating your CMB
   tags:
@@ -12,11 +21,13 @@
   - fighter bonus
   - melee
 - name: Athletic
+  score: 0
   prereqs: null
   benefits: +2 bonus on Climb and Swim checks
   tags:
   - mobility
 - name: Combat Expertise
+  score: 10
   prereqs: IQ 13
   benefits: Trade attack bonus for AC bonus
   tags:

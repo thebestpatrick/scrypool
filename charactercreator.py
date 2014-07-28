@@ -74,14 +74,64 @@ def extra_kind_stat_roll(char_class):
 			break
 	return arr
 
-def pick_feat(tags, character_file):
+def lists_overlap(a, b):
+	for i in a:
+		if i in b:
+			return True
+	return False
+
+def pick_feat(tags, character_file): # tags is a list
 	# Factor through a ton of crap to figure out what feats to pick
+	# characterfile = yaml.load(character_file)
+
 	print("picking feat...")
 	feats = yaml.load(open("feats.yml"))
-	# Pick a random one.
-	prelimchoice = random.choice(feats)
-	# See if the choice makes sense, using tags
-	# check if all prereqs have been met.
+	random.shuffle(feats) # randomize the list
+	x = 0
+	lastscore = 0
+	lastchoice = feats[x]
+	for f in feats:
+		prelimscore = 0
+		prelimchoice = feats[x] # get x position
+		
+		prelimscore = feats[x]["score"]
+		
+		x += 1 # change it before we start testing so the continues will work fine
+		# if you already have the feat, skip it!  FIXME!  this section isn't throwing stuff out properly
+		# exception for handling first level blank feat lists.
+		try:
+			if prelimchoice["name"] in character_file["feats"]:
+				continue
+		except:
+			pass
+		
+		# See if the choice makes sense, using tags
+		# check if all prereqs have been met.
+		
+		for itag in prelimchoice["tags"]:
+			if itag in prelimchoice["tags"]:
+				prelimscore += 10 # might be too high or too low.  I want to add points for tags in common
+				
+		if prelimchoice["name"] in prelimchoice["tags"]:
+			prelimscore += 70 # add a ton of points if you are specifically looking for this feat.
+			# mostly here for user specified tags I do think.
+			
+		if character_file["class"] in prelimchoice["tags"]:
+			prelimscore += 20 # if the feat is tagged for your class, bonus.
+		
+		if prelimscore == lastscore and roll.roll(1,2) == 2:
+			# if two feats score the same, flip a coin to decide new or old
+			lastchoice = prelimchoice
+			continue
+		elif prelimscore > lastscore:
+			# if old is greater than new, keep old...so do nothing
+			continue
+		else:
+			# else new is greater than old, drop in new.
+			lastchoice = prelimchoice
+			lastscore = prelimscore
+			continue
+		break
 	finalchoice = prelimchoice["name"]
 	return finalchoice
 	
@@ -102,14 +152,14 @@ def parse_specials(character_file):
 			# pick a generic bonus feat
 			print("picking bonus feat")
 			characterfile["specials"].remove(s)
-			characterfile["feats"].append(pick_feat("mobility", characterfile)) # FIXME since mobility isn't the only tag
+			characterfile["feats"].append(pick_feat(["mobility", ], characterfile)) # FIXME since mobility isn't the only tag
 		elif s == "fighter bonus feat":
 			# pick a fighter bonus feat
 			print("picking fighter bonus feat")
 			characterfile["specials"].remove(s)
 		else: 
 			# stuff
-			blah = 12 # doing nothing I guess?
+			pass # doing nothing I guess?
 	return characterfile
 
 def yaml_create_character(char_race, char_class, mods): # Seems rather slow and clunking, will need optimizing
@@ -124,13 +174,14 @@ def yaml_create_character(char_race, char_class, mods): # Seems rather slow and 
 	finale += "symbol: " + fg.coatofarms_gen() + "\n"
 	finale += "class: " + char_class + "\n"
 	
-	finale += "feats: \n- " + pick_feat("mobility", finale) + "\n" # FIXME: don't always pass mobility
+	finale += "feats: \n- " + pick_feat(["mobility", ], finale) + "\n" # FIXME: don't always pass mobility
 	
 	#print(name)
 	## Roll stats
 	initstats = kind_stat_roll(char_class)
 	
 	## Open the needed files and make sure they work before we go farther
+	## Should probably, at some point, move these to a database access system.
 	try:
 		racefile = yaml.load(open('races/' + char_race + '.yml').read())
 	except:
