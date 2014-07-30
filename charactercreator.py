@@ -6,6 +6,7 @@ import flavorgenerator as fg
 #config = json.loads(open('charactersheets/examplecharacter.json').read())
 # print(config["inventory"][0]["backpack"])
 
+
 def merciless_stat_roll():
 	arr = [roll.roll(3,6), roll.roll(3,6), roll.roll(3,6),\
 	roll.roll(3,6), roll.roll(3,6), roll.roll(3,6)]
