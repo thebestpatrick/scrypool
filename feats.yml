@@ -28,7 +28,9 @@
   - mobility
 - name: Combat Expertise
   score: 10
-  prereqs: IQ 13
+  prereqs: 
+   stats: 
+   - IQ 13
   benefits: Trade attack bonus for AC bonus
   tags:
   - defensive

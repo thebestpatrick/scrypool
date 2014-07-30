@@ -80,65 +80,65 @@ def lists_overlap(a, b):
 			return True
 	return False
 
+## Good format for other prereq checkers
+def check_stat_prereqs(prereq, charactersheet): # True = passed prereq challenge
+	try:
+		a = prereq.split()
+		if int(charactersheet[a[0]]) >= int(a[1]):
+			return True
+		else: 
+			return False
+		
+	except:
+	# not fond of failing this on an exception...
+	# maybe null instead?
+		return null
+
 def pick_feat(tags, character_file): # tags is a list
-	# Factor through a ton of crap to figure out what feats to pick
+## Totally threw out everything here. starting fresh
+## git commit 68c8cdfbbc66322545ac910e29b6f8205113b60a had last version
+
 	characterfile = yaml.load(str(character_file))
-	
-	print("picking feat...")
 	feats = yaml.load(open("feats.yml"))
-	random.shuffle(feats) # randomize the list
-	
-	x = 0
-	lastscore = 0
-	lastchoice = feats[x]
-	for f in feats:
-		prelimscore = 0
-		prelimchoice = feats[x] # get x position
-		
-		prelimscore = feats[x]["score"]
-		
-		x += 1 # change it before we start testing so the continues will work fine
-		
-		## WARNING!! ENTERING THE LAND OF HACKY BUG FIXING!! ## 
-		# if you already have the feat, skip it!  FIXME!  this section isn't throwing stuff out properly
-		# exception for handling first level blank feat lists.
-		# this was all committed and backed up so if I need to just throw it all out, its theoretically backed up
+	random.shuffle(feats)
+	ranktobeat = 0
+	for f in feats:	
+		# make sure its not already picked
 		try:
-			if prelimchoice["name"] in characterfile["feats"]:
+			if f["name"] in characterfile["feats"]:
 				continue
 		except:
 			pass
-		
-		# See if the choice makes sense, using tags
-		# check if all prereqs have been met.
-		
-		for itag in prelimchoice["tags"]:
-			if itag in prelimchoice["tags"]:
-				prelimscore += 10 # might be too high or too low.  I want to add points for tags in common
-				
-		if prelimchoice["name"] in prelimchoice["tags"]:
-			prelimscore += 70 # add a ton of points if you are specifically looking for this feat.
-			# mostly here for user specified tags I do think.
 			
-		if characterfile["class"] in prelimchoice["tags"]:
-			prelimscore += 20 # if the feat is tagged for your class, bonus.
+		## check prereqs
 		
-		# final score
-		print(str(prelimscore) + " : " + str(prelimchoice["name"]))
-		if prelimscore == lastscore and roll.roll(1,2) == 2:
-			# if two feats score the same, flip a coin to decide new or old
-			lastchoice = prelimchoice
+		# # # # WORK GOES HERE # # # #
+		passing = [True, ] # any falses in the list fails everything
+		try: 
+			for s in f["prereqs"]["stats"]:
+				passing.append(check_stat_prereqs(str(s), characterfile))
+		except: pass
+		if False in passing:
 			continue
-		elif prelimscore > lastscore:
-			# if old is greater than new, keep old...so do nothing
-			continue
+		## end of prereq checking
+		
+		## rank f
+		rank = f["score"]
+		
+		for x in tags:
+			if x in f["tags"]: rank += 10 # add ten for every matching tag.
+			
+		if characterfile["class"] in f["tags"]: rank += 20 # add twenty if the class is called out.
+		
+		if f["name"] in tags: rank += 75 # if the name of the feat is tagged, probably want to give it to them
+		
+		## end of rankings, make call
+		if rank > ranktobeat: finalchoice = f["name"]
+		elif rank < ranktobeat: pass
 		else:
-			# else new is greater than old, drop in new.
-			lastchoice = prelimchoice
-			lastscore = prelimscore
-			continue
-		break
-	finalchoice = prelimchoice["name"]
+			# flip coin
+			if roll.roll(1,6) >= 1: finalchoice = f["name"]
+		print(str(f["name"]) + " : " + str(rank))
 	return finalchoice
 	
 def parse_specials(character_file):
@@ -180,7 +180,6 @@ def yaml_create_character(char_race, char_class, mods): # Seems rather slow and 
 	finale += "symbol: " + fg.coatofarms_gen() + "\n"
 	finale += "class: " + char_class + "\n"
 	
-	finale += "feats: \n- " + pick_feat(["mobility", ], finale) + "\n" # FIXME: don't always pass mobility
 	
 	#print(name)
 	## Roll stats
@@ -207,12 +206,13 @@ def yaml_create_character(char_race, char_class, mods): # Seems rather slow and 
 		if i < 3:
 			adstats[a] = 3
 		else:
-			lsjgklskl = 12
+			pass
 		finale += stats[a] + ": " + str(adstats[a]) + "\n"
 		a += 1
 	
 	finale += "size: " + racefile["size"] + "\n"
 	finale += "speed: " + str(racefile["speed"]) + "\n"
+	finale += "feats: \n- " + pick_feat(["mobility", "melee"], finale) + "\n" # FIXME: don't always pass mobility
 	
 	##
 	## this section could be chopped out and moved to the 'level up' function, since its just
