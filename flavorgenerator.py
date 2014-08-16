@@ -3,36 +3,44 @@
 from roll import roll 
 import random
 import yaml
-import string
+
 
 def name_gen_eng(gender): ## Generates a random and rather vanilla medieval english sounding name
     # http://www.infernaldreams.com/names/Europe/Medieval/England.htm
-    male_names_common = ['Adam', 'Geoffrey', 'Gilbert', 'Henry', 'Hugh', 'John', 'Nicholas',\
+    male_names_common = ['Adam', 'Geoffrey', 'Gilbert', 'Henry', 'Hugh', 'John', 'Nicholas',
      'Peter', 'Ralf', 'Richard', 'Robert', 'Roger', 'Simon', 'Thomas', 'Walter', 'William']
     
-    male_names_uncommon = ['Alard', 'Ademar', 'Adelard', 'Aldous', 'Alphonse', 'Ancel', 'Arnold', \
-    'Bardol', 'Bernard', 'Bartram', 'Botolf',\
-    'Charles', 'Clarenbald', 'Conrad', 'Curtis',\
-    'Diggory', 'Drogo', 'Droyn', 'Dreue',\
-    'Ernis', 'Ernisius', 'Eude', 'Edon','Everard',\
-    'Faramond', 'Ferand','Frank', 'Frederick', 'Fawkes', 'Foulque',\
-    'Gaillard', 'Gerald', 'Gerard', 'Gervase', 'Godfrey', 'Guy',\
-    'Hamett', 'Harvey', 'Henry', 'Herman', 'Hubert', 'Yngerame',\
-    'Lance', 'Louis', 'Louve', 'Manfred', 'Miles', 'Norman', 'Otto',\
-    'Percival', 'Randal', 'Raymond', 'Reynard', 'Sagard', 'Serlo', 'Talbot', 'Theodoric',\
-    'Wymond']
+    male_names_uncommon = [
+        'Alard', 'Ademar', 'Adelard', 'Aldous', 'Alphonse', 'Ancel', 'Arnold',
+        'Bardol', 'Bernard', 'Bartram', 'Botolf',
+        'Charles', 'Clarenbald', 'Conrad', 'Curtis',
+        'Diggory', 'Drogo', 'Droyn', 'Dreue',
+        'Ernis', 'Ernisius', 'Eude', 'Edon','Everard',
+        'Faramond', 'Ferand','Frank', 'Frederick', 'Fawkes', 'Foulque',
+        'Gaillard', 'Gerald', 'Gerard', 'Gervase', 'Godfrey', 'Guy',
+        'Hamett', 'Harvey', 'Henry', 'Herman', 'Hubert', 'Yngerame',
+        'Lance', 'Louis', 'Louve', 'Manfred', 'Miles', 'Norman', 'Otto',
+        'Percival', 'Randal', 'Raymond', 'Reynard', 'Sagard', 'Serlo', 'Talbot', 'Theodoric',
+        'Wymond'
+    ]
     
-    lastnames = ['Smith', 'Cooper', 'Cook', 'Hill', 'Underhill', 'Wright', 'Taylor', 'Chapman', 'Barker',\
-    'Tanner', 'Fiddler', 'Puttock', 'Arkwright', 'Mason', 'Carpenter', 'Dymond', 'Armstrong',\
-    'Black', 'White', 'Green', 'Gray', 'Sykes', 'Attwood', 'Miller']
+    lastnames = [
+        'Smith', 'Cooper', 'Cook', 'Hill', 'Underhill', 'Wright', 'Taylor', 'Chapman', 'Barker',
+        'Tanner', 'Fiddler', 'Puttock', 'Arkwright', 'Mason', 'Carpenter', 'Dymond', 'Armstrong',
+        'Black', 'White', 'Green', 'Gray', 'Sykes', 'Attwood', 'Miller'
+    ]
     
-    female_names_common = ['Emma', 'Agnes' , 'Alice', 'Avice', 'Beatrice', 'Cecily', 'Isabella',\
-    'Joan', 'Juliana', 'Margery', 'Matilda', 'Rohesia']
+    female_names_common = [
+        'Emma', 'Agnes' , 'Alice', 'Avice', 'Beatrice', 'Cecily', 'Isabella',
+        'Joan', 'Juliana', 'Margery', 'Matilda', 'Rohesia'
+    ]
     
-    female_names_uncommon = ['Adelaide', 'Ada', 'Aubrey', 'Alice', 'Alison', 'Avelina', 'Eleanor',\
-    'Ella', 'Galiena', 'Giselle', 'Griselda', 'Matilda', 'Millicent', 'Yvonne', 'Elizabeth', 'Eva',\
-    'Gabella', 'Jacqueline', 'Sapphira', 'Tyffany', 'Bridget', 'Guinevere', 'Isolda', 'Alexandra',\
-    'Cassandra', 'Denise', 'Sibyl']
+    female_names_uncommon = [
+        'Adelaide', 'Ada', 'Aubrey', 'Alice', 'Alison', 'Avelina', 'Eleanor',
+        'Ella', 'Galiena', 'Giselle', 'Griselda', 'Matilda', 'Millicent', 'Yvonne', 'Elizabeth', 'Eva',
+        'Gabella', 'Jacqueline', 'Sapphira', 'Tyffany', 'Bridget', 'Guinevere', 'Isolda', 'Alexandra',
+        'Cassandra', 'Denise', 'Sibyl'
+    ]
     
     # MALE NAMES
     if gender == 'm':
@@ -61,6 +69,7 @@ def name_gen_eng(gender): ## Generates a random and rather vanilla medieval engl
             lastname = lastname + "son"
     fullname = firstname + " " + lastname
     return fullname
+
 
 def gen_name(gender, race):
     try:
@@ -139,11 +148,13 @@ def gen_name(gender, race):
     
     return fullname
 
+
 ## Hair color and style
 def hair(): # might want to allow input on this
     colors = ['brown', 'red', 'blonde', 'black', 'dirty blonde', 'jet black', 'white', 'grey']
     styles = ['wavey', 'long', 'greasy', 'straight', 'neat', 'curly']
     return random.choice(colors) + " " + random.choice(styles)
+
 
 def coatofarms_gen(): ## Generates a random coat of arms
     # Should someday take some sort of seed value to modify it.
@@ -152,12 +163,14 @@ def coatofarms_gen(): ## Generates a random coat of arms
     
     colors = ['Black', 'Silver', 'Gray', 'Green', 'Gold', 'Red', 'Orange', 'Blue', 'Purple', 'Sky-blue']
     
-    animals = ['Dragon', 'Lion', 'Stag', 'Wolf', 'Griffon', 'Eagle', 'Hawk', 'Owl', 'Raven', 'Horse', 'Elephant',\
-    'Pegasus', 'Unicorn', 'Dog', 'Cockatrice', 'Snake', 'Pike', 'Trout', 'Kraken', 'Leopard', 'Bear', 'Boar']
+    animals = [
+        'Dragon', 'Lion', 'Stag', 'Wolf', 'Griffon', 'Eagle', 'Hawk', 'Owl', 'Raven', 'Horse', 'Elephant',
+        'Pegasus', 'Unicorn', 'Dog', 'Cockatrice', 'Snake', 'Pike', 'Trout', 'Kraken', 'Leopard', 'Bear', 'Boar'
+    ]
     symbols = ['Oak', 'Aspen', 'River', 'Sword', 'Axe', 'Key', 'Crown', 'Wheat', 'Rose', 'Sun', 'Boat']
     
-    divisions = ['Fess', 'Pale', 'Bend', 'Bend sinister', 'Saltire', 'Cross', 'Chevron', 'Pall'] # party per
-    divisionmods = ['Wavy', 'Indented', 'Engrailed', 'Invected', 'Nebuly', 'Embattled', 'Dovetailed', 'Potenty']
+    divisions = ['Fess', 'Pale', 'Bend', 'Bend sinister', 'Saltire', 'Cross', 'Chevron', 'Pall']  # party per
+    # divisionmods = ['Wavy', 'Indented', 'Engrailed', 'Invected', 'Nebuly', 'Embattled', 'Dovetailed', 'Potenty']
     
     bends = ['Bend', 'Bendlet', 'Baton', 'Riband', 'Bendy of Six', 'Bend Cotised']
     

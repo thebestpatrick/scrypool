@@ -1,6 +1,10 @@
 #!/usr/bin/python3.3
 
-import yaml, cfunc, roll, random, yaml
+import yaml
+import cfunc
+import roll
+import random
+
 import flavorgenerator as fg
 
 #config = json.loads(open('charactersheets/examplecharacter.json').read())
@@ -8,13 +12,16 @@ import flavorgenerator as fg
 
 
 def merciless_stat_roll():
-    arr = [roll.roll(3,6), roll.roll(3,6), roll.roll(3,6),\
+    arr = [roll.roll(3,6), roll.roll(3,6), roll.roll(3,6),
     roll.roll(3,6), roll.roll(3,6), roll.roll(3,6)]
     return arr
-    
-def regular_stat_roll(char_class): ## UNFINISHED....FIXME!
-    arr = [roll.best_of(4,6,3), roll.best_of(4,6,3), roll.best_of(4,6,3), \
-    roll.best_of(4,6,3), roll.best_of(4,6,3), roll.best_of(4,6,3)]
+
+
+def regular_stat_roll(char_class):  ## UNFINISHED....FIXME!
+    arr = [
+        roll.best_of(4,6,3), roll.best_of(4,6,3), roll.best_of(4,6,3),
+        roll.best_of(4,6,3), roll.best_of(4,6,3), roll.best_of(4,6,3)
+    ]
     arr=sorted(arr, reverse=True)
     
     classfile = yaml.load(open('classes/' + char_class + '.yml').read())
@@ -33,11 +40,14 @@ def regular_stat_roll(char_class): ## UNFINISHED....FIXME!
             
     return 7
 
+
 def kind_stat_roll(char_class):
     while True:
         statsok=True
-        arr = [roll.roll(3,6), roll.roll(3,6), roll.roll(3,6),\
-        roll.roll(3,6), roll.roll(3,6), roll.roll(3,6)]
+        arr = [
+            roll.roll(3,6), roll.roll(3,6), roll.roll(3,6),
+            roll.roll(3,6), roll.roll(3,6), roll.roll(3,6)
+        ]
         
         classfile = yaml.load(open('classes/' + char_class + '.yml').read())
         prefstats = classfile["prefstats"]
@@ -54,11 +64,14 @@ def kind_stat_roll(char_class):
             break
     return arr
 
+
 def extra_kind_stat_roll(char_class):
     while True:
         statsok=True
-        arr = [roll.best_of(4,6,3), roll.best_of(4,6,3), roll.best_of(4,6,3), \
-        roll.best_of(4,6,3), roll.best_of(4,6,3), roll.best_of(4,6,3)]
+        arr = [
+            roll.best_of(4,6,3), roll.best_of(4,6,3), roll.best_of(4,6,3),
+            roll.best_of(4,6,3), roll.best_of(4,6,3), roll.best_of(4,6,3)
+        ]
         
         classfile = yaml.load(open('classes/' + char_class + '.yml').read())
         prefstats = classfile["prefstats"]
@@ -67,13 +80,14 @@ def extra_kind_stat_roll(char_class):
         x = 0
         for i in stats:
             if i in prefstats and arr[x] <= 14:
-                statsok=False
+                statsok = False
                 x += 1
             else:
                 x += 1
         if statsok:
             break
     return arr
+
 
 def lists_overlap(a, b):
     for i in a:
@@ -81,8 +95,9 @@ def lists_overlap(a, b):
             return True
     return False
 
+
 ## Good format for other prereq checkers
-def check_stat_prereqs(prereq, charactersheet): # True = passed prereq challenge
+def check_stat_prereqs(prereq, charactersheet):  # True = passed prereq challenge
     try:
         a = prereq.split()
         if int(charactersheet[a[0]]) >= int(a[1]):
@@ -93,9 +108,10 @@ def check_stat_prereqs(prereq, charactersheet): # True = passed prereq challenge
     except:
     # not fond of failing this on an exception...
     # maybe null instead?
-        return null
+        return False
 
-def pick_feat(tags, character_file): # tags is a list
+
+def pick_feat(tags, character_file):  # tags is a list
 ## Totally threw out everything here. starting fresh
 ## git commit 68c8cdfbbc66322545ac910e29b6f8205113b60a had last version
 
@@ -128,20 +144,25 @@ def pick_feat(tags, character_file): # tags is a list
         
         for x in tags:
             if x in f["tags"]: rank += 10 # add ten for every matching tag.
-            
-        if characterfile["class"] in f["tags"]: rank += 20 # add twenty if the class is called out.
-        
-        if f["name"] in tags: rank += 75 # if the name of the feat is tagged, probably want to give it to them
+
+        # add twenty if the class is called out.
+        if characterfile["class"] in f["tags"]: rank += 20
+
+        # if the name of the feat is tagged, probably want to give it to them
+        if f["name"] in tags: rank += 75
         
         ## end of rankings, make call
-        if rank > ranktobeat: finalchoice = f["name"]
-        elif rank < ranktobeat: pass
+        if rank > ranktobeat:
+            finalchoice = f["name"]
+        elif rank < ranktobeat:
+            pass
         else:
             # flip coin
             if roll.roll(1,6) >= 1: finalchoice = f["name"]
         print(str(f["name"]) + " : " + str(rank))
     return finalchoice
-    
+
+
 def parse_specials(character_file):
     # A function for taking race and class special features, like bonus feat,
     # and turning them into the thing that they mean, then returning the proper 
@@ -166,8 +187,9 @@ def parse_specials(character_file):
             characterfile["specials"].remove(s)
         else: 
             # stuff
-            pass # doing nothing I guess?
+            pass  # doing nothing I guess?
     return characterfile
+
 
 def yaml_create_character(char_race, char_class, mods): # Seems rather slow and clunking, will need optimizing
     # take care of this top line elsewhere
@@ -242,4 +264,3 @@ def yaml_create_character(char_race, char_class, mods): # Seems rather slow and 
     finale = parse_specials(finale)
 
     return finale
-    

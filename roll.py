@@ -2,6 +2,7 @@
 
 import random
 
+
 def roll(dice, sides):
     a = 0
     x = 1
@@ -9,6 +10,7 @@ def roll(dice, sides):
         a += random.randint(1, sides)
         x += 1
     return a
+
 
 def best_of(dice, sides, top):
     a = []
@@ -24,6 +26,8 @@ def best_of(dice, sides, top):
         p += a[y]
         y += 1
     return p
+
+
 def statswitch(x):
     return {
         'ST': 0,
@@ -33,16 +37,18 @@ def statswitch(x):
         'IQ': 4,
         'CH': 5,
         'any': 7,
-        }.get(x, 9)
+    }.get(x, 9)
 
-def challenge(bonus, DC): # simplest pass/fail system in d20 format
-    a = roll(1,20)
+
+def challenge(bonus, dc): # simplest pass/fail system in d20 format
+    a = roll(1, 20)
     if a == 20:
         return True
-    elif (a+bonus) >= DC:
+    elif (a+bonus) >= dc:
         return True
     else:
         return False
+
 
 def block_roll(block):
     # Function to parse through a complicated set of rolling,

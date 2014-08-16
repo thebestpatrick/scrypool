@@ -1,7 +1,10 @@
 #!/usr/bin/python3.3
 ## A holding file for misc. character related files.
 
-import yaml, roll, random, math
+import roll
+import random
+import math
+
 
 ## Make sure a character has a feat.
 def has_feat(character, feat):
@@ -10,12 +13,14 @@ def has_feat(character, feat):
     except:
         return False
 
+
 ## See how many skill points a character has in a skill
 def get_skill_points(character, skill):
     try:
         return character["skills"][skill]
     except:
         return 0
+
 
 ## Check how many levels of a particular class a character has
 def check_class_level(character, charclass):
@@ -24,6 +29,7 @@ def check_class_level(character, charclass):
     except:
         return 0
 
+
 ## Get the total level of a character
 def get_total_level(character):
     arr = character["levels"]
@@ -31,6 +37,7 @@ def get_total_level(character):
     for i in arr:
         tlev += check_class_level(character, i)
     return tlev
+
 
 ## Apply race stat bonuses
 def apply_race_stats(initstats, racefile, classfile): # wants the racefile and classfile pre-opened and nice
@@ -58,6 +65,8 @@ def nstatmod(stat):
         return 0
     else:
         return a
+
+
 ## Remove race stat bonuses
 def remove_race_stats(initstats, racefile, classfile): # wants the racefile and classfile pre-opened and nice
     arr = racefile["statmods"]
