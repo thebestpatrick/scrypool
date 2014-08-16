@@ -180,10 +180,7 @@ def yaml_create_character(char_race, char_class, mods): # Seems rather slow and 
     finale += "race: " + char_race + "\n"
     finale += "symbol: " + fg.coatofarms_gen() + "\n"
     finale += "class: " + char_class + "\n"
-    
-    
-    #print(name)
-    ## Roll stats
+
     initstats = kind_stat_roll(char_class)
     
     ## Open the needed files and make sure they work before we go farther
@@ -196,7 +193,7 @@ def yaml_create_character(char_race, char_class, mods): # Seems rather slow and 
         classfile = yaml.load(open('classes/' + char_class + '.yml').read())
     except:
         print("could not open class file yaml")
-    #print(initstats)
+
     ## Apply Racial Bonuses
     adstats = cfunc.apply_race_stats(initstats, racefile, classfile)
     #print(adstats)
