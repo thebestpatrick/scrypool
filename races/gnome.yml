@@ -1,0 +1,69 @@
+race specials:
+  - low-light vision
+  - defensive training
+  - gnome magic
+  - hatred
+  - illusion resistance
+  - keen senses
+  - obsessive
+  - weapon familiarity gnome
+size: small
+speed: 20
+statmods:
+  CN: 2
+  CH: 2
+  ST: -2
+# now a bunch of crap about names and stuff
+endings:
+- son
+- ton
+female common names:
+- Besh
+- Fijit
+- Lini
+- Majet
+- Neji
+- Pai
+- Queck
+- Trig
+female uncommon names:
+- Ylowyn
+- Yonove
+- Jellys
+- Triphina
+- Ornove
+- Daphiyore
+- Breebys
+- Prina
+- Tifaci
+- Daphitina
+lastnames:
+- Ipabar
+- Nitor
+- Urigim
+- Mercorin
+- Neskur
+- Bilgim
+- Wremin
+- Urixif
+- Lanfan
+- Valwor
+male common names:
+- Abroshtor
+- Bastargre
+- Halungalom
+- Krolmnite
+- Poshment
+- Zarzuket
+- Zatqualmie
+male uncommon names:
+- Ermin
+- Hisfiz
+- Ronji
+- Corfiz
+- Briybar
+- Nihik
+- Felgim
+- Yexim
+- Panadon
+- Rasgim
