@@ -12,17 +12,19 @@ import flavorgenerator as fg
 
 
 def merciless_stat_roll():
-    arr = [roll.roll(3,6), roll.roll(3,6), roll.roll(3,6),
-    roll.roll(3,6), roll.roll(3,6), roll.roll(3,6)]
+    arr = [
+        roll.roll(3, 6), roll.roll(3, 6), roll.roll(3, 6),
+        roll.roll(3, 6), roll.roll(3, 6), roll.roll(3, 6)
+    ]
     return arr
 
 
-def regular_stat_roll(char_class):  ## UNFINISHED....FIXME!
+def regular_stat_roll(char_class):  # UNFINISHED....FIXME!
     arr = [
-        roll.best_of(4,6,3), roll.best_of(4,6,3), roll.best_of(4,6,3),
-        roll.best_of(4,6,3), roll.best_of(4,6,3), roll.best_of(4,6,3)
+        roll.best_of(4, 6, 3), roll.best_of(4, 6, 3), roll.best_of(4, 6, 3),
+        roll.best_of(4, 6, 3), roll.best_of(4, 6, 3), roll.best_of(4, 6, 3)
     ]
-    arr=sorted(arr, reverse=True)
+    arr = sorted(arr, reverse=True)
     
     classfile = yaml.load(open('classes/' + char_class + '.yml').read())
     
@@ -42,39 +44,15 @@ def regular_stat_roll(char_class):  ## UNFINISHED....FIXME!
 
 
 def kind_stat_roll(char_class):
+    classfile = yaml.load(open('classes/' + char_class + '.yml').read())
+    prefstats = classfile["prefstats"]
+
     while True:
         statsok = True
         arr = [
             roll.roll(3, 6), roll.roll(3, 6), roll.roll(3, 6),
             roll.roll(3, 6), roll.roll(3, 6), roll.roll(3, 6)
         ]
-        
-        classfile = yaml.load(open('classes/' + char_class + '.yml').read())
-        prefstats = classfile["prefstats"]
-        
-        stats = ["ST", "DX", "CN", "WS", "IQ", "CH"]
-        x = 0
-        for i in stats:
-            if i in prefstats and arr[x] <= 14:
-                statsok=False
-                x += 1
-            else:
-                x += 1
-        if statsok:
-            break
-    return arr
-
-
-def extra_kind_stat_roll(char_class):
-    while True:
-        statsok = True
-        arr = [
-            roll.best_of(4, 6, 3), roll.best_of(4, 6, 3), roll.best_of(4, 6, 3),
-            roll.best_of(4, 6, 3), roll.best_of(4, 6, 3), roll.best_of(4, 6, 3)
-        ]
-        
-        classfile = yaml.load(open('classes/' + char_class + '.yml').read())
-        prefstats = classfile["prefstats"]
         
         stats = ["ST", "DX", "CN", "WS", "IQ", "CH"]
         x = 0
@@ -86,6 +64,25 @@ def extra_kind_stat_roll(char_class):
                 x += 1
         if statsok:
             break
+    return arr
+
+
+def extra_kind_stat_roll(char_class):
+    classfile = yaml.load(open('classes/' + char_class + '.yml').read())
+    prefstats = classfile["prefstats"]
+    while True:
+        arr = [
+            roll.best_of(4, 6, 3), roll.best_of(4, 6, 3), roll.best_of(4, 6, 3),
+            roll.best_of(4, 6, 3), roll.best_of(4, 6, 3), roll.best_of(4, 6, 3)
+        ]
+        
+        stats = ["ST", "DX", "CN", "WS", "IQ", "CH"]
+        x = 0
+        for i in stats:
+            if i in prefstats and arr[x] <= 14:
+                continue
+            else:
+                x += 1
     return arr
 
 
@@ -139,7 +136,7 @@ def pick_feat(tags, character_file):  # tags is a list
         ## check prereqs
         
         # # # # WORK GOES HERE # # # #
-        passing = [True, ] # any falses in the list fails everything
+        passing = [True, ]  # any falses in the list fails everything
 
         # Check stat prereqs
         try: 
@@ -174,7 +171,7 @@ def pick_feat(tags, character_file):  # tags is a list
         except:
             pass  # there are no feat prereqs, keep rolling
 
-        passing = [True, ] # any falses in the list fails everything
+        passing = [True, ]  # any falses in the list fails everything
         for x in preqs:
             if x in charfeats:
                 rank += 20
@@ -182,18 +179,19 @@ def pick_feat(tags, character_file):  # tags is a list
                 passing.append(False)
         if False in passing:
             continue
-
         ## end of prereq checking
 
-        
         for x in tags:
-            if x in f["tags"]: rank += 10 # add ten for every matching tag.
+            if x in f["tags"]:
+                rank += 10  # add ten for every matching tag.
 
         # add twenty if the class is called out.
-        if characterfile["class"] in f["tags"]: rank += 20
+        if characterfile["class"] in f["tags"]:
+            rank += 20
 
         # if the name of the feat is tagged, probably want to give it to them
-        if f["name"] in tags: rank += 175
+        if f["name"] in tags:
+            rank += 175
         
         ## end of rankings, make call
         if rank > ranktobeat:
@@ -203,8 +201,8 @@ def pick_feat(tags, character_file):  # tags is a list
             pass
         else:
             # pick randomly
-            if roll.roll(1,6) >= 1: finalchoice = f["name"]
-        print(str(f["name"]) + " : " + str(rank))
+            if roll.roll(1, 3) >= 1:
+                finalchoice = f["name"]
     return finalchoice
 
 
@@ -223,22 +221,41 @@ def parse_specials(character_file):
             parse_specials(yaml.dump(characterfile))
         elif s == "bonus feat":
             # pick a generic bonus feat
-            print("picking bonus feat")
             characterfile["specials"].remove(s)
-            characterfile["feats"].append(pick_feat(["mobility", ], characterfile)) # FIXME since mobility isn't the only tag
+            characterfile["feats"].append(pick_feat([], characterfile))  # FIXME maybe get tags arg 1?
         elif s == "fighter bonus feat":
             # pick a fighter bonus feat
-            print("picking fighter bonus feat")
             characterfile["specials"].remove(s)
+            characterfile["feats"].append(pick_feat(["fighter bonus", ], characterfile))
         else: 
             # stuff
             pass  # doing nothing I guess?
     return characterfile
 
 
-def yaml_create_character(char_race, char_class, mods): # Seems rather slow and clunking, will need optimizing
-    # take care of this top line elsewhere
-    # finale = "!!python/object:__main__.entity\n"
+def pick_skills(character_file, class_skills):  # Only useful during character creation.
+    characterfile = yaml.load(str(character_file))
+    classfile = yaml.load(open('classes/' + characterfile["class"] + '.yml').read())
+
+    # Get skill points
+    skill_points = cfunc.statmod(characterfile["IQ"]) + classfile["skills per rank"]
+    if "skilled" in characterfile["specials"]:
+        skill_points += 1
+    x = 0
+    skills = ""
+    random.shuffle(class_skills)
+    if skill_points <= 0:
+        skill_points = 1
+    while x < skill_points:
+        # Get new class skills
+        skills += class_skills.pop() + ": 1 \n  "
+        # FIXME might get an error here with more skill points than skills
+        # Pick random skills?  should never happen
+        x += 1
+    return skills
+
+
+def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and clunking, will need optimizing
     genders = ["m", "f"]
     gender = random.choice(genders)
     name = fg.gen_name(gender, char_race)
@@ -272,10 +289,15 @@ def yaml_create_character(char_race, char_class, mods): # Seems rather slow and 
             pass
         finale += stats[a] + ": " + str(adstats[a]) + "\n"
         a += 1
-    
+
+    # check both race file and class file for their respective specials
+    speclist = classfile["level 1"]["special"] + racefile["race specials"]
+    finale += "specials: \n" + yaml.dump(speclist, default_flow_style=False) + "\n"
+
     finale += "size: " + racefile["size"] + "\n"
     finale += "speed: " + str(racefile["speed"]) + "\n"
-    finale += "feats: \n- " + pick_feat(["mobility", "melee"], finale) + "\n" # FIXME: don't always pass mobility
+    finale += "skills: \n  " + pick_skills(finale, classfile["class skills"]) + "\n"
+    finale += "feats: \n- " + pick_feat(mods, finale) + "\n"
     
     ##
     ## this section could be chopped out and moved to the 'level up' function, since its just
@@ -295,11 +317,7 @@ def yaml_create_character(char_race, char_class, mods): # Seems rather slow and 
     ## when necessary, without cluttering the specials section of 
     ## the character sheet
     ## 
-    
-    # check both race file and class file for their respective specials
-    speclist = classfile["level 1"]["special"] + racefile["race specials"]
-    finale += "specials: \n" +  yaml.dump(speclist, default_flow_style=False) + "\n"
-    
+
     # Pass the string in for post processing, things like feat assignment and some 
     # parsing work regarding it.
     

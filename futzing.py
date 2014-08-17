@@ -5,4 +5,5 @@ import yaml
 #a = yaml.load(open("classes/barbarian.yml"))
 #b = yaml.load(open("races/human.yml"))
 
-print(yaml.dump(yaml_create_character("human", "barbarian", "null"), default_flow_style=False))
+print(yaml.dump(yaml_create_character("human", "barbarian", ["mobility", ]), default_flow_style=False))
+

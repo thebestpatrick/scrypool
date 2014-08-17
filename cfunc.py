@@ -55,9 +55,13 @@ def apply_race_stats(initstats, racefile, classfile): # wants the racefile and c
         except:
             print("apply_race_stats error " + i)
     return initstats
+
+
 ## Get stat mod
 def statmod(stat):
     return math.floor( (stat-10) / 2)
+
+
 ## Gets stat mod but ignores negatives
 def nstatmod(stat):
     a = math.floor( (stat-10) / 2)
