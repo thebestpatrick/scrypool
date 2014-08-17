@@ -1,0 +1,173 @@
+race specials:
+  - low-light vision
+  - elf blood
+  - adaptability
+  - elven immunities
+  - keen senses
+  # instead of multitalented, pick between these.
+  # healthy has no real precedence, so note:
+  # gives +1 HP per level.
+  - [skilled, healthy]
+size: medium
+speed: 30
+statmods:
+  any: 2
+# now a bunch of crap about names and stuff
+endings:
+- son
+- ton
+female common names:
+- Cathran
+- Elsbeth
+- Iandoli
+- Kieyanna
+- Lialda
+- Maddela
+- Reda
+- Tamarie
+female uncommon names:
+- Adelaide
+- Ada
+- Aubrey
+- Alice
+- Alison
+- Avelina
+- Eleanor
+- Ella
+- Galiena
+- Giselle
+- Griselda
+- Matilda
+- Millicent
+- Yvonne
+- Elizabeth
+- Eva
+- Gabella
+- Jacqueline
+- Sapphira
+- Tyffany
+- Bridget
+- Guinevere
+- Isolda
+- Alexandra
+- Cassandra
+- Denise
+- Sibyl
+- Gifnalore
+- Jilkaen
+- Thersys
+- Delnalore
+- Safnys
+- Phayebwynn
+- Loraelor
+- Norgwynn
+- Faexaris
+- Faepisys
+lastnames:
+- Smith
+- Cooper
+- Cook
+- Hill
+- Underhill
+- Wright
+- Taylor
+- Chapman
+- Barker
+- Tanner
+- Fiddler
+- Walynor
+- Horvalor
+- Petcoril
+- Osxian
+- Davtumil
+- Halxiron
+- Zylnan
+- Belword
+- Elcraes
+- Meiwarith
+- Black
+- White
+- Green
+- Gray
+- Sykes
+- Attwood
+- Miller
+male common names:
+- Calathes
+- Encinal
+- Iradli
+- Kyras
+- Narciso
+- Quinray
+- Seltyiel
+- Zirul
+male uncommon names:
+- Alard
+- Ademar
+- Adelard
+- Aldous
+- Alphonse
+- Ancel
+- Arnold
+- Bardol
+- Bernard
+- Bartram
+- Botolf
+- Charles
+- Clarenbald
+- Conrad
+- Curtis
+- Diggory
+- Drogo
+- Droyn
+- Dreue
+- Ernis
+- Ernisius
+- Eude
+- Edon
+- Everard
+- Edward
+- Faramond
+- Ferand
+- Frank
+- Frederick
+- Fawkes
+- Foulque
+- Gaillard
+- Gerald
+- Gerard
+- Gervase
+- Godfrey
+- Guy
+- Hamett
+- Harvey
+- Henry
+- Herman
+- Hubert
+- Yngerame
+- Lance
+- Louis
+- Louve
+- Manfred
+- Miles
+- Norman
+- Otto
+- Percival
+- Randal
+- Raymond
+- Reynard
+- Sagard
+- Serlo
+- Talbot
+- Theodoric
+- Wymond
+- Norxiron
+- Risariph
+- Sarben
+- Oricoril
+- Kevzaphir
+- Raforin
+- Panhomin
+- Rafminar
+- Rafhorn
+- Yorparin
