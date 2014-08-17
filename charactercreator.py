@@ -119,7 +119,16 @@ def pick_feat(tags, character_file):  # tags is a list
     feats = yaml.load(open("feats.yml"))
     random.shuffle(feats)
     ranktobeat = 0
-    for f in feats:    
+    finalchoice = "Toughness"  # just so it has a default.
+
+    # Load the feats there are now for later use
+    try:
+        charfeats = characterfile["feats"]
+    except:
+        charfeats = []
+    for f in feats:
+        ## rank f
+        rank = f["score"]
         # make sure its not already picked
         try:
             if f["name"] in characterfile["feats"]:
@@ -148,17 +157,34 @@ def pick_feat(tags, character_file):  # tags is a list
 
         # Check Base attack prereq
         try:
-            if f["prereqs"]["base attack"] >= character_file["base attack"]:
+            if f["prereqs"]["base attack"] >= characterfile["base attack"]:
+                stupidcrap = f + " wut?"  # FIXME I have no idea what this does...
+                # if you remove stupid crap here...the whole thing breaks when
+                # a feat has a base attack requirement?  what the actual fuck?
                 continue
             else:
-                rank+=5
+                rank += 5
         except:
-            pass
+            pass  # but make sure base attack is set before calling this!
+
+        # Check Feats prereqs
+        preqs = []
+        try:
+            preqs = f["prereqs"]["feats"]
+        except:
+            pass  # there are no feat prereqs, keep rolling
+
+        passing = [True, ] # any falses in the list fails everything
+        for x in preqs:
+            if x in charfeats:
+                rank += 20
+            else:
+                passing.append(False)
+        if False in passing:
+            continue
 
         ## end of prereq checking
-        
-        ## rank f
-        rank = f["score"]
+
         
         for x in tags:
             if x in f["tags"]: rank += 10 # add ten for every matching tag.
@@ -167,11 +193,12 @@ def pick_feat(tags, character_file):  # tags is a list
         if characterfile["class"] in f["tags"]: rank += 20
 
         # if the name of the feat is tagged, probably want to give it to them
-        if f["name"] in tags: rank += 75
+        if f["name"] in tags: rank += 175
         
         ## end of rankings, make call
         if rank > ranktobeat:
             finalchoice = f["name"]
+            ranktobeat = rank
         elif rank < ranktobeat:
             pass
         else:
@@ -230,6 +257,8 @@ def yaml_create_character(char_race, char_class, mods): # Seems rather slow and 
 
     classfile = yaml.load(open('classes/' + char_class + '.yml').read())
 
+    finale += "base attack: " + str(classfile["level 1"]["baseattack"]) + "\n"
+
     ## Apply Racial Bonuses
     adstats = cfunc.apply_race_stats(initstats, racefile, classfile)
     #print(adstats)
@@ -256,7 +285,6 @@ def yaml_create_character(char_race, char_class, mods): # Seems rather slow and 
     
     finale += "total hp: " + str(classfile["hit die"] + cfunc.nstatmod(adstats[2])) + "\n"
     finale += "current hp: " + str(classfile["hit die"] + cfunc.nstatmod(adstats[2])) + "\n"
-    finale += "base attack: " + str(classfile["level 1"]["baseattack"]) + "\n"
     finale += "fort save: " + str(classfile["level 1"]["fortsave"]) + "\n"
     finale += "reflex save: " + str(classfile["level 1"]["refsave"]) + "\n"
     finale += "will save: " + str(classfile["level 1"]["willsave"]) + "\n"

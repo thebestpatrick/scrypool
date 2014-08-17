@@ -37,12 +37,22 @@
   - fighter bonus
   - melee
 - name: Power Attack
-  score: 20
+  score: 10
   prereqs:
     stats:
     - ST 13
     base attack: 1
   benefits: Trade melee attack bonus for damage
+  tags:
+  - melee
+  - fighter bonus
+  - aggressive
+- name: Cleave
+  score: 20
+  prereqs:
+    feats:
+    - Power Attack
+  benefits: Make an additional attack if the first one hits
   tags:
   - melee
   - fighter bonus
