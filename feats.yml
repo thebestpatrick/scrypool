@@ -36,3 +36,14 @@
   - defensive
   - fighter bonus
   - melee
+- name: Power Attack
+  score: 20
+  prereqs:
+    stats:
+    - ST 13
+    base attack: 1
+  benefits: Trade melee attack bonus for damage
+  tags:
+  - melee
+  - fighter bonus
+  - aggressive

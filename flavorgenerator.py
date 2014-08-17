@@ -5,7 +5,7 @@ import random
 import yaml
 
 
-def name_gen_eng(gender): ## Generates a random and rather vanilla medieval english sounding name
+def name_gen_eng(gender):  ## Generates a random and rather vanilla medieval english sounding name
     # http://www.infernaldreams.com/names/Europe/Medieval/England.htm
     male_names_common = ['Adam', 'Geoffrey', 'Gilbert', 'Henry', 'Hugh', 'John', 'Nicholas',
      'Peter', 'Ralf', 'Richard', 'Robert', 'Roger', 'Simon', 'Thomas', 'Walter', 'William']
@@ -205,8 +205,9 @@ def coatofarms_gen(): ## Generates a random coat of arms
         # Do a symbol set up
         symbol = random.choice(symbols)
         colour = random.choice(colors)
+        attitude = random.choice(attitudes)
         if f <= 2:
-            attitude = attitude + " " + random.choice(attitudemod)
+            attitude += " " + random.choice(attitudemod)
         # Do background:
         e = roll(1,6)
         if e == 1:

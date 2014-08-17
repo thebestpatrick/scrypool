@@ -43,10 +43,10 @@ def regular_stat_roll(char_class):  ## UNFINISHED....FIXME!
 
 def kind_stat_roll(char_class):
     while True:
-        statsok=True
+        statsok = True
         arr = [
-            roll.roll(3,6), roll.roll(3,6), roll.roll(3,6),
-            roll.roll(3,6), roll.roll(3,6), roll.roll(3,6)
+            roll.roll(3, 6), roll.roll(3, 6), roll.roll(3, 6),
+            roll.roll(3, 6), roll.roll(3, 6), roll.roll(3, 6)
         ]
         
         classfile = yaml.load(open('classes/' + char_class + '.yml').read())
@@ -67,10 +67,10 @@ def kind_stat_roll(char_class):
 
 def extra_kind_stat_roll(char_class):
     while True:
-        statsok=True
+        statsok = True
         arr = [
-            roll.best_of(4,6,3), roll.best_of(4,6,3), roll.best_of(4,6,3),
-            roll.best_of(4,6,3), roll.best_of(4,6,3), roll.best_of(4,6,3)
+            roll.best_of(4, 6, 3), roll.best_of(4, 6, 3), roll.best_of(4, 6, 3),
+            roll.best_of(4, 6, 3), roll.best_of(4, 6, 3), roll.best_of(4, 6, 3)
         ]
         
         classfile = yaml.load(open('classes/' + char_class + '.yml').read())
@@ -131,12 +131,30 @@ def pick_feat(tags, character_file):  # tags is a list
         
         # # # # WORK GOES HERE # # # #
         passing = [True, ] # any falses in the list fails everything
+
+        # Check stat prereqs
         try: 
             for s in f["prereqs"]["stats"]:
-                passing.append(check_stat_prereqs(str(s), characterfile))
-        except: pass
+                z = check_stat_prereqs(str(s), characterfile)
+                if z:
+                    rank += 5
+                else:
+                    pass
+                passing.append(z)
+        except:
+            pass
         if False in passing:
             continue
+
+        # Check Base attack prereq
+        try:
+            if f["prereqs"]["base attack"] >= character_file["base attack"]:
+                continue
+            else:
+                rank+=5
+        except:
+            pass
+
         ## end of prereq checking
         
         ## rank f
@@ -157,7 +175,7 @@ def pick_feat(tags, character_file):  # tags is a list
         elif rank < ranktobeat:
             pass
         else:
-            # flip coin
+            # pick randomly
             if roll.roll(1,6) >= 1: finalchoice = f["name"]
         print(str(f["name"]) + " : " + str(rank))
     return finalchoice
@@ -200,21 +218,17 @@ def yaml_create_character(char_race, char_class, mods): # Seems rather slow and 
     finale = "name: " + name + "\n"
     finale += "gender: " + gender + "\n"
     finale += "race: " + char_race + "\n"
-    finale += "symbol: " + fg.coatofarms_gen() + "\n"
+    # finale += "symbol: " + fg.coatofarms_gen() + "\n"
     finale += "class: " + char_class + "\n"
 
     initstats = kind_stat_roll(char_class)
     
     ## Open the needed files and make sure they work before we go farther
     ## Should probably, at some point, move these to a database access system.
-    try:
-        racefile = yaml.load(open('races/' + char_race + '.yml').read())
-    except:
-        print("could not open race file yaml")
-    try:
-        classfile = yaml.load(open('classes/' + char_class + '.yml').read())
-    except:
-        print("could not open class file yaml")
+
+    racefile = yaml.load(open('races/' + char_race + '.yml').read())
+
+    classfile = yaml.load(open('classes/' + char_class + '.yml').read())
 
     ## Apply Racial Bonuses
     adstats = cfunc.apply_race_stats(initstats, racefile, classfile)
