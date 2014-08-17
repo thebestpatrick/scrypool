@@ -67,7 +67,7 @@ def get_caster_level(char_file):
 
 
 ## Apply race stat bonuses
-def apply_race_stats(initstats, racefile, classfile): # wants the racefile and classfile pre-opened and nice
+def apply_race_stats(initstats, racefile, classfile):  # wants the racefile and classfile pre-opened and nice
     arr = racefile["statmods"]
     for i in arr:
         a = roll.statswitch(i)
@@ -86,7 +86,7 @@ def apply_race_stats(initstats, racefile, classfile): # wants the racefile and c
 
 ## Get stat mod
 def statmod(stat):
-    return math.floor( (stat-10) / 2)
+    return math.floor((stat-10) / 2)
 
 
 ## Gets stat mod but ignores negatives

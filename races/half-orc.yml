@@ -1,0 +1,63 @@
+race specials:
+  - darkvision
+  - intimidating
+  - orc blood
+  - orc ferocity
+  - weapon familiarity orc
+size: medium
+speed: 30
+statmods:
+  any: 2
+# now a bunch of crap about names and stuff
+endings:
+- ird
+- akl
+female common names:
+- Canan
+- Drogheda
+- Goruza
+- Mazon
+- Shirish
+- Tevaga
+- Zeljka
+female uncommon names:
+- Temezira
+- Umush
+- Zunamur
+- Ootogar
+- Zunorel
+- Rawiwar
+- Rahkezira
+- Moruzur
+- Gogri
+- Grigum
+lastnames:
+- Borabak
+- Mahlagul
+- Lumoglar
+- Gramuz
+- Gromanars
+- Dobur
+- Kraenar
+- Lumiruk
+- Honozur
+- Gotuzar
+male common names:
+- Ausk
+- Davor
+- Hakak
+- Kizziar
+- Makoa
+- Nesteruk
+- Tsadok
+male uncommon names:
+- Dororim
+- Trakuburk
+- Kruun
+- Beludim
+- Ollagark
+- Sugash
+- Arnam
+- Makebak
+- Gnaeg
+- Ugarak
