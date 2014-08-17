@@ -39,6 +39,33 @@ def get_total_level(character):
     return tlev
 
 
+def get_caster_level(char_file):
+    # https://docs.python.org/3.3/library/stdtypes.html#dict
+    # maybe use get here?
+    cl = 0
+    # WIZARD
+    try:
+        cl += char_file["class"]["wizard"]
+    except:
+        cl += 0
+    # SORCERER
+    try:
+        cl += char_file["class"]["sorcerer"]
+    except:
+        cl += 0
+    # BARD
+    try:
+        cl += char_file["class"]["bard"]
+    except:
+        cl += 0
+    # CLERIC
+    try:
+        cl += char_file["class"]["cleric"]
+    except:
+        cl += 0
+    return cl
+
+
 ## Apply race stat bonuses
 def apply_race_stats(initstats, racefile, classfile): # wants the racefile and classfile pre-opened and nice
     arr = racefile["statmods"]

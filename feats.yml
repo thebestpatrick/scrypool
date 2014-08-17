@@ -57,3 +57,10 @@
   - melee
   - fighter bonus
   - aggressive
+- name: Brew Potion
+  score: 0
+  prereqs:
+    caster level: 3
+  benefits: Create magic potions
+  tags:
+  - wizard

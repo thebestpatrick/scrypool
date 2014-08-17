@@ -132,10 +132,20 @@ def pick_feat(tags, character_file):  # tags is a list
                 continue
         except:
             pass
-            
+
+        # if its a fighter bonus, then it must hold
+        if "fighter bonus" in tags and "fighter bonus" not in f["tags"]:
+            continue
+
         ## check prereqs
         
         # # # # WORK GOES HERE # # # #
+
+        try:
+            if f["prereqs"]["caster level"] > cfunc.get_caster_level(characterfile):
+                continue
+        except:
+            pass
         passing = [True, ]  # any falses in the list fails everything
 
         # Check stat prereqs
@@ -234,8 +244,12 @@ def parse_specials(character_file):
 
 
 def pick_skills(character_file, class_skills):  # Only useful during character creation.
+    # really this should all get the same treatment of feats...
+    # but that sounds hard, and no one cares about skills anyway.
     characterfile = yaml.load(str(character_file))
-    classfile = yaml.load(open('classes/' + characterfile["class"] + '.yml').read())
+
+    for key in characterfile["class"]:  # like this won't work except in creation.
+        classfile = yaml.load(open('classes/' + key + '.yml').read())
 
     # Get skill points
     skill_points = cfunc.statmod(characterfile["IQ"]) + classfile["skills per rank"]
@@ -263,7 +277,7 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     finale += "gender: " + gender + "\n"
     finale += "race: " + char_race + "\n"
     # finale += "symbol: " + fg.coatofarms_gen() + "\n"
-    finale += "class: " + char_class + "\n"
+    finale += "class: \n  " + char_class + ": 1\n"
 
     initstats = kind_stat_roll(char_class)
     
