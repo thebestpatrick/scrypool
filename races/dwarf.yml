@@ -1,0 +1,66 @@
+race specials:
+  - darkvision
+  - defensive training
+  - greed
+  - hatred
+  - hardy
+  - stability
+  - stonecunning
+  - weapon familiarity dwarven
+size: medium
+speed: 20
+statmods:
+  CN: 2
+  WS: 2
+  CH: -2
+# now a bunch of crap about names and stuff
+endings:
+- ov
+- in
+female common names:
+- Agna
+- Bodill
+- Ingra
+- Kotri
+- Rusilka,
+- Yangrit
+female uncommon names:
+- Gwynvian
+- Rynthel
+- Randelle
+- Tazsora
+- Marla
+- Marmora
+- Tishsael
+- Lassnan
+- Maernera
+- Misvan
+lastnames:
+- Hjulren
+- Kramkum
+- Thornur
+- Brumdram
+- Farmyr
+- Hulrak
+- Ermgram
+- Fardus
+- Thelkam
+- Thyiggs
+male common names:
+- Dolgrin
+- Grunyar
+- Harsk
+- Kazmuk
+- Morgrym
+- Rogar
+male uncommon names:
+- Harkohm
+- Grammund
+- Hjolrim
+- Morthrum
+- Grytharm
+- Dultharm
+- Maltharn
+- Brandrom
+- Darrak
+- Daermand
