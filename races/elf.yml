@@ -1,0 +1,68 @@
+race specials:
+  - low-light vision
+  - elven immunities
+  - elven magic
+  - keen senses
+  - weapon familiarity elven
+size: medium
+speed: 30
+statmods:
+  DX: 2
+  IQ: 2
+  CN: -2
+# now a bunch of crap about names and stuff
+endings:
+- iara
+- una
+female common names:
+- Amrunelara
+- Dardlara
+- Faunra
+- Jathal
+- Merisiel
+- Oparal
+- Soumral
+- Tessara
+- Yalandlara
+female uncommon names:
+- Nimue
+- Sinnafain
+- Phyrra
+- Tethys
+- Aelynthi
+- Raerauntha
+- Ysmyrlda
+- Moryggan
+- Gwynnestri
+- Yulmanda
+lastnames:
+- Vulre
+- Alok
+- Lysanthir
+- Keletheryl
+- Chathanglas
+- Vulre
+- Illitran
+- Ryo
+- Abarat
+- Adamar
+male common names:
+- Caladrel
+- Heldalel
+- Lanliss
+- Meirdrarel
+- Seldlon
+- Talathel
+- Variel
+- Zordlon
+male uncommon names:
+- Skalanis
+- Aywin
+- Maiele
+- Connak
+- Cyran
+- Folduin
+- Marikoth
+- Kieran
+- Nyvorlas
+- Illithor
