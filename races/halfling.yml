@@ -1,0 +1,72 @@
+race specials:
+  - fearless
+  - halfling luck
+  - keen senses
+  - sure-footed
+  - weapon familiarity halfling
+size: small
+speed: 20
+statmods:
+  DX: 2
+  CH: 2
+  ST: -2
+# now a bunch of crap about names and stuff
+endings:
+- gins
+- hill
+female common names:
+- Anafa
+- Bellis
+- Etune
+- Filiu
+- Irlana
+- Marra
+- Pressi
+- Rilka
+- Sistra
+- Wyssal
+- Yamyra
+female uncommon names:
+- Nenys
+- Sadrey
+- Hilprys
+- Therzana
+- Xanalyn
+- Zenlie
+- Elileigh
+- Unazira
+- Kelcey
+- Ancaryn
+lastnames:
+- Tarfire
+- Corrich
+- Lapher
+- Tarmin
+- Zenret
+- Yenret
+- Wenwrick
+- Ulver
+- Osmin
+- Finvon
+male common names:
+- Antal
+- Boram
+- Hyrgan
+- Jamir
+- Lem
+- Miro
+- Sumak
+- Tribin
+- Uldar
+- Vraxim
+male uncommon names:
+- Convias
+- Yarbul
+- Sharser
+- Perumo
+- Rios
+- Flynhace
+- Halvias
+- Dankas
+- Rickin
+- Xanhorn
