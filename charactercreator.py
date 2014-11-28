@@ -12,6 +12,7 @@ import flavorgenerator as fg
 
 
 def merciless_stat_roll():
+    """Rolls 3d6 and sticks you with the result.  Probably not the best idea for most purposes."""
     arr = [
         roll.roll(3, 6), roll.roll(3, 6), roll.roll(3, 6),
         roll.roll(3, 6), roll.roll(3, 6), roll.roll(3, 6)
@@ -20,6 +21,7 @@ def merciless_stat_roll():
 
 
 def regular_stat_roll(char_class):  # UNFINISHED....FIXME!
+    """Rolls 4d6, picks the best 3.  Then puts the best results on the appropriate ability scores"""
     arr = [
         roll.best_of(4, 6, 3), roll.best_of(4, 6, 3), roll.best_of(4, 6, 3),
         roll.best_of(4, 6, 3), roll.best_of(4, 6, 3), roll.best_of(4, 6, 3)
@@ -44,6 +46,7 @@ def regular_stat_roll(char_class):  # UNFINISHED....FIXME!
 
 
 def kind_stat_roll(char_class):
+    """Rolls 3d6, then makes sure that all important stats are above 13"""
     classfile = yaml.load(open('classes/' + char_class + '.yml').read())
     prefstats = classfile["prefstats"]
 
@@ -68,6 +71,7 @@ def kind_stat_roll(char_class):
 
 
 def extra_kind_stat_roll(char_class):
+    """Rolls 4d6, picks best three, then makes sure all the important stats are over 13"""
     classfile = yaml.load(open('classes/' + char_class + '.yml').read())
     prefstats = classfile["prefstats"]
     while True:
@@ -87,6 +91,7 @@ def extra_kind_stat_roll(char_class):
 
 
 def lists_overlap(a, b):
+    """Checks to see if there is any overlap between two lists"""
     for i in a:
         if i in b:
             return True
@@ -94,7 +99,8 @@ def lists_overlap(a, b):
 
 
 ## Good format for other prereq checkers
-def check_stat_prereqs(prereq, charactersheet):  # True = passed prereq challenge
+def check_stat_prereqs(prereq, charactersheet):
+    """Returns True if the prereqs are met, false if they aren't.  Returns False also on exception"""
     try:
         a = prereq.split()
         if int(charactersheet[a[0]]) >= int(a[1]):
@@ -109,6 +115,8 @@ def check_stat_prereqs(prereq, charactersheet):  # True = passed prereq challeng
 
 
 def pick_feat(tags, character_file):  # tags is a list
+    """Picks a feat using score rankings on the list."""
+    # Not super efficient, so don't call it too much
 ## Totally threw out everything here. starting fresh
 ## git commit 68c8cdfbbc66322545ac910e29b6f8205113b60a had last version
 
@@ -217,9 +225,8 @@ def pick_feat(tags, character_file):  # tags is a list
 
 
 def parse_specials(character_file):
-    # A function for taking race and class special features, like bonus feat,
-    # and turning them into the thing that they mean, then returning the proper 
-    # list of specials.
+    """A function for taking race and class special features, like bonus feat,
+    and turning them into the thing that they mean, then returning the proper list of specials."""
     finlist = list()
     characterfile = yaml.load(character_file)
     
@@ -243,9 +250,9 @@ def parse_specials(character_file):
     return characterfile
 
 
-def pick_skills(character_file, class_skills):  # Only useful during character creation.
-    # really this should all get the same treatment of feats...
-    # but that sounds hard, and no one cares about skills anyway.
+def pick_init_skills(character_file, class_skills):
+    """Only useful during character creation, really this should all get the same treatment of feats...
+    but that sounds hard, and no one cares about skills anyway."""
     characterfile = yaml.load(str(character_file))
 
     for key in characterfile["class"]:  # like this won't work except in creation.
@@ -270,14 +277,15 @@ def pick_skills(character_file, class_skills):  # Only useful during character c
 
 
 def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and clunking, will need optimizing
+    """Given a race and class, returns a yaml formatted character sheet"""
     genders = ["m", "f"]
     gender = random.choice(genders)
     name = fg.gen_name(gender, char_race)
-    finale = "name: " + name + "\n"
-    finale += "gender: " + gender + "\n"
-    finale += "race: " + char_race + "\n"
-    # finale += "symbol: " + fg.coatofarms_gen() + "\n"
-    finale += "class: \n  " + char_class + ": 1\n"
+    char_sheet = "name: " + name + "\n"
+    char_sheet += "gender: " + gender + "\n"
+    char_sheet += "race: " + char_race + "\n"
+    # char_sheet += "symbol: " + fg.coatofarms_gen() + "\n"
+    char_sheet += "class: \n  " + char_class + ": 1\n"
 
     initstats = kind_stat_roll(char_class)
     
@@ -288,7 +296,7 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
 
     classfile = yaml.load(open('classes/' + char_class + '.yml').read())
 
-    finale += "base attack: " + str(classfile["level 1"]["baseattack"]) + "\n"
+    char_sheet += "base attack: " + str(classfile["level 1"]["baseattack"]) + "\n"
 
     ## Apply Racial Bonuses
     adstats = cfunc.apply_race_stats(initstats, racefile, classfile)
@@ -301,17 +309,17 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
             adstats[a] = 3
         else:
             pass
-        finale += stats[a] + ": " + str(adstats[a]) + "\n"
+        char_sheet += stats[a] + ": " + str(adstats[a]) + "\n"
         a += 1
 
     # check both race file and class file for their respective specials
     speclist = classfile["level 1"]["special"] + racefile["race specials"]
-    finale += "specials: \n" + yaml.dump(speclist, default_flow_style=False) + "\n"
+    char_sheet += "specials: \n" + yaml.dump(speclist, default_flow_style=False) + "\n"
 
-    finale += "size: " + racefile["size"] + "\n"
-    finale += "speed: " + str(racefile["speed"]) + "\n"
-    finale += "skills: \n  " + pick_skills(finale, classfile["class skills"]) + "\n"
-    finale += "feats: \n- " + pick_feat(mods, finale) + "\n"
+    char_sheet += "size: " + racefile["size"] + "\n"
+    char_sheet += "speed: " + str(racefile["speed"]) + "\n"
+    char_sheet += "skills: \n  " + pick_init_skills(char_sheet, classfile["class skills"]) + "\n"
+    char_sheet += "feats: \n- " + pick_feat(mods, char_sheet) + "\n"
     
     ##
     ## this section could be chopped out and moved to the 'level up' function, since its just
@@ -319,11 +327,11 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     ## since it is kind of unique handling at level one.  
     ## 
     
-    finale += "total hp: " + str(classfile["hit die"] + cfunc.nstatmod(adstats[2])) + "\n"
-    finale += "current hp: " + str(classfile["hit die"] + cfunc.nstatmod(adstats[2])) + "\n"
-    finale += "fort save: " + str(classfile["level 1"]["fortsave"]) + "\n"
-    finale += "reflex save: " + str(classfile["level 1"]["refsave"]) + "\n"
-    finale += "will save: " + str(classfile["level 1"]["willsave"]) + "\n"
+    char_sheet += "total hp: " + str(classfile["hit die"] + cfunc.nstatmod(adstats[2])) + "\n"
+    char_sheet += "current hp: " + str(classfile["hit die"] + cfunc.nstatmod(adstats[2])) + "\n"
+    char_sheet += "fort save: " + str(classfile["level 1"]["fortsave"]) + "\n"
+    char_sheet += "reflex save: " + str(classfile["level 1"]["refsave"]) + "\n"
+    char_sheet += "will save: " + str(classfile["level 1"]["willsave"]) + "\n"
     
     ##
     ## this section here definitely deserves special treatment
@@ -335,6 +343,6 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     # Pass the string in for post processing, things like feat assignment and some 
     # parsing work regarding it.
     
-    finale = parse_specials(finale)
+    char_sheet = parse_specials(char_sheet)
 
-    return finale
+    return char_sheet

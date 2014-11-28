@@ -5,7 +5,8 @@ import random
 import yaml
 
 
-def name_gen_eng(gender):  ## Generates a random and rather vanilla medieval english sounding name
+def name_gen_eng(gender):
+    """Generates a random and rather vanilla medieval english sounding name"""
     # http://www.infernaldreams.com/names/Europe/Medieval/England.htm
     male_names_common = ['Adam', 'Geoffrey', 'Gilbert', 'Henry', 'Hugh', 'John', 'Nicholas',
      'Peter', 'Ralf', 'Richard', 'Robert', 'Roger', 'Simon', 'Thomas', 'Walter', 'William']
@@ -72,6 +73,7 @@ def name_gen_eng(gender):  ## Generates a random and rather vanilla medieval eng
 
 
 def gen_name(gender, race):
+    """Returns a random name given gender and race"""
     try:
         all = yaml.load(open('races/' + race + '.yml').read())
         male_names_common = all["male common names"]
@@ -149,14 +151,15 @@ def gen_name(gender, race):
     return fullname
 
 
-## Hair color and style
-def hair(): # might want to allow input on this
+def hair():
+    """Returns a style and color of hair"""
     colors = ['brown', 'red', 'blonde', 'black', 'dirty blonde', 'jet black', 'white', 'grey']
     styles = ['wavey', 'long', 'greasy', 'straight', 'neat', 'curly']
     return random.choice(colors) + " " + random.choice(styles)
 
 
-def coatofarms_gen(): ## Generates a random coat of arms
+def coatofarms_gen():
+    """Generates a random coat of arms"""
     # Should someday take some sort of seed value to modify it.
     attitudes = ['Rampant', 'Passant', 'Sejant', 'Couchant', 'Courant', 'Dormant', 'Salient', 'Statant', 'Sejant Erect']
     attitudemod = ['Guardant', 'Regardant']

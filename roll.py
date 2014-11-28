@@ -4,6 +4,7 @@ import random
 
 
 def roll(dice, sides):
+    """Returns a dice roll of 'dice'd'sides'"""
     a = 0
     x = 1
     while x <= dice:
@@ -13,6 +14,7 @@ def roll(dice, sides):
 
 
 def best_of(dice, sides, top):
+    """Returns the sum of 'top' from 'dice'd'sides'"""
     a = []
     x = 1
     while x <= dice:
@@ -29,6 +31,7 @@ def best_of(dice, sides, top):
 
 
 def statswitch(x):
+    """Boring function that enumerates the stat list"""
     return {
         'ST': 0,
         'DX': 1,
@@ -40,7 +43,8 @@ def statswitch(x):
     }.get(x, 9)
 
 
-def challenge(bonus, dc): # simplest pass/fail system in d20 format
+def challenge(bonus, dc):
+    """A basic challenge.  Given bonus plus 1d20, returns fail if sum less than 'dc'"""
     a = roll(1, 20)
     if a == 20:
         return True
@@ -51,8 +55,8 @@ def challenge(bonus, dc): # simplest pass/fail system in d20 format
 
 
 def block_roll(block):
-    # Function to parse through a complicated set of rolling,
-    # probably using a stack, shunting yard algoritm and reverse polish notation.  
+    """Function to parse through a complicated set of rolling,
+    probably using a stack, shunting yard algoritm and reverse polish notation."""
     
     # Blocks formatted like 2d6+27 or 3d20*4d4
     

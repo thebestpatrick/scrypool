@@ -6,32 +6,32 @@ import random
 import math
 
 
-## Make sure a character has a feat.
 def has_feat(character, feat):
+    """Given character and feat, checks to see if character has feat."""
     try:
         return character["feats"][feat]
     except:
         return False
 
 
-## See how many skill points a character has in a skill
 def get_skill_points(character, skill):
+    """Returns number of skill points in a skill"""
     try:
         return character["skills"][skill]
     except:
         return 0
 
 
-## Check how many levels of a particular class a character has
 def check_class_level(character, charclass):
+    """Checks number of levels in a specific class for a character"""
     try:
         return character["levels"][charclass]
     except:
         return 0
 
 
-## Get the total level of a character
 def get_total_level(character):
+    """Returns total character level"""
     arr = character["levels"]
     tlev = 0
     for i in arr:
@@ -40,6 +40,7 @@ def get_total_level(character):
 
 
 def get_caster_level(char_file):
+    """Returns total caster level"""
     # https://docs.python.org/3.3/library/stdtypes.html#dict
     # maybe use get here?
     cl = 0
@@ -65,9 +66,9 @@ def get_caster_level(char_file):
         cl += 0
     return cl
 
-
-## Apply race stat bonuses
-def apply_race_stats(initstats, racefile, classfile):  # wants the racefile and classfile pre-opened and nice
+# wants the racefile and classfile pre-opened and nice
+def apply_race_stats(initstats, racefile, classfile):
+    """Applies racial stat bonuses"""
     arr = racefile["statmods"]
     for i in arr:
         a = roll.statswitch(i)
@@ -84,13 +85,13 @@ def apply_race_stats(initstats, racefile, classfile):  # wants the racefile and 
     return initstats
 
 
-## Get stat mod
 def statmod(stat):
+    """Returns the stat modifier of a stat"""
     return math.floor((stat-10) / 2)
 
 
-## Gets stat mod but ignores negatives
 def nstatmod(stat):
+    """Like statmod() but less than zero is zero"""
     a = math.floor( (stat-10) / 2)
     if a <= 0:
         return 0
@@ -98,8 +99,9 @@ def nstatmod(stat):
         return a
 
 
-## Remove race stat bonuses
-def remove_race_stats(initstats, racefile, classfile): # wants the racefile and classfile pre-opened and nice
+# wants the racefile and classfile pre-opened and nice
+def remove_race_stats(initstats, racefile, classfile):
+    """Removes the racial stat bonuses."""
     arr = racefile["statmods"]
     for i in arr:
         a = roll.statswitch(i)

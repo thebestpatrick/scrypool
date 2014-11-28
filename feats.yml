@@ -7,7 +7,7 @@
 #    whether fighter bonus is viable here.
 - name: Acrobatics
   score: 0
-  prereqs: null
+  prereqs: nullS
   benefits: +2 bonus on Acrobatics and Fly checks
   tags: 
   - mobility

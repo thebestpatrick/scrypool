@@ -1,4 +1,7 @@
 # since its the first one this is kind of an example class file
+# if you can select one of several different options,
+# put them under special as a list, like [thing1, thing2, thing3] and
+# one will be randomly selected.
 class skills:
 - Acrobatics
 - Climb
@@ -10,7 +13,13 @@ class skills:
 - Ride
 - Survival
 - Swim
+prefstats:
+- ST
+- CN
+skills per rank: 4
+starting gp: 3d6 x 10 gp
 hit die: 12
+
 level 1:
   baseattack: 1
   fortsave: 2
@@ -18,12 +27,4 @@ level 1:
   special:
   - Fast movement
   - rage
-# if you can select one of several different options, 
-# put them under special as a list, like [thing1, thing2, thing3] and
-# one will be randomly selected.
   willsave: 0
-prefstats:
-- ST
-- CN
-skills per rank: 4
-starting gp: 3d6 x 10 gp
