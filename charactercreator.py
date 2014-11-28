@@ -332,6 +332,30 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     char_sheet += "fort save: " + str(classfile["level 1"]["fortsave"]) + "\n"
     char_sheet += "reflex save: " + str(classfile["level 1"]["refsave"]) + "\n"
     char_sheet += "will save: " + str(classfile["level 1"]["willsave"]) + "\n"
+
+    if str(classfile["magic type"]) == "None":
+        pass
+    elif str(classfile["magic type"]) == "Arcane":
+        pass
+        # Handle Wizard and sorcerer spell formation here
+    elif str(classfile["magic type"]) == "Bard":
+        pass
+        # Handle bard spell formation here
+    elif str(classfile["magic type"]) == "Divine":
+        pass
+        # Handle cleric and similar spell formation
+    elif str(classfile["magic type"]) == "Druid":
+        pass
+        # Handle druid spell formation
+    elif str(classfile["magic type"]) == "Paladin":
+        pass
+        # Handle Paladin spell formation
+    elif str(classfile["magic type"]) == "Ranger":
+        pass
+        # Handle Ranger spell formation\
+    else:
+        pass
+        # Might be tricky, but handle this oddity some other way
     
     ##
     ## this section here definitely deserves special treatment

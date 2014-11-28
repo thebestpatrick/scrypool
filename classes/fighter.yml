@@ -1,0 +1,27 @@
+class skills:
+- Climb
+- Craft
+- Handle Animal
+- Intimidate
+- Knowledge (dungeoneering)
+- Knowledge (engineering)
+- Profession
+- Ride
+- Survival
+- Swim
+prefstats:
+- ST
+- CN
+- DX
+skills per rank: 2
+starting gp: 5d6 x 10 gp
+hit die: 10
+magic type: None
+
+level 1:
+  baseattack: 1
+  fortsave: 2
+  refsave: 0
+  willsave: 0
+  special:
+  - fighter bonus feat

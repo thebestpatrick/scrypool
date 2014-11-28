@@ -19,12 +19,13 @@ prefstats:
 skills per rank: 4
 starting gp: 3d6 x 10 gp
 hit die: 12
+magic type: None
 
 level 1:
   baseattack: 1
   fortsave: 2
   refsave: 0
+  willsave: 0
   special:
   - Fast movement
   - rage
-  willsave: 0
