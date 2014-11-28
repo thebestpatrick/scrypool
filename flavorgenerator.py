@@ -227,16 +227,76 @@ def coatofarms_gen():
         fullcoat = "a " + colour + " " + symbol + " on " + background
     return fullcoat
 
-#def generic_tavern_generator(): ## Generate a generic tavern layout and occupants
-    # Should also someday take modifiers to affect its behavior.
 
-#def generic_castle_generator(size, culture): ## Generate a fort or castle based on parameters
-    # Size is pretty standard, but culture could be like viking, crusader, anything really
-    # Might need its own file. 
+def pick_deity(alignment):
+    """Selects a deity for the character out of the deities.yml file."""
+    align_grid = [['LG', 'NG', 'CG'],
+                  ['LN', 'NN', 'CN'],
+                  ['LE', 'NE', 'CE']]
+    if alignment[1] == 'G':
+        pr = [0,1]
+    elif alignment[1] == 'E':
+        pr = [1,2]
+    else:
+        pr = [0,1,2]
 
-#def generic_building_generator(culture): ## Generate a quick building of a random type, with contents.
-    # Culture could be urban, rural, viking, elf, anything.
-    # This one might need its own file too
+    if alignment[0] == 'L':
+        pc = [0,1]
+    elif alignment[0] == 'C':
+        pc = [1,2]
+    else:
+        pc = [0,1,2]
 
-#for x in range(1,10):
-    #print(name_gen_eng('m') + "'s coat of arms is " + coatofarms_gen())
+
+    try:
+        deitylist = yaml.load(open('deities.yml').read())
+        random.shuffle(deitylist)
+    except:
+        pass
+    for entity in deitylist:
+        # check if the alignment is within a step
+        deity_align = entity["alignment"]
+
+        for b in pr:
+            for c in pc:
+                if deity_align == align_grid[b][c]:
+                    return entity["name"]
+                else:
+                    pass
+    return None
+
+
+
+def pick_alignment(range):
+    """Given restrictions in 'range', picks an alignment"""
+    # Implement some kind of thing in character sheets to restrict alignments...
+    # A list, first entry is law to chaos, second is good to evil.
+    # If something can be anything except something then say non [letter], i.e.
+    # If a class cannot be lawful, then in l2c, say "non L"
+    # Might have to change this at some point if lists ever get out of order.
+    l2cl = ['L', 'N', 'C']
+    g2el = ['G', 'N', 'E']
+    l2c = range.pop(0)
+    g2e = range.pop(0)
+
+    if 'non' in g2e:
+        g2el.remove(g2e[4])
+        g2e = random.choice(g2el)
+    if 'non' in l2c:
+        l2cl.remove(l2c[4])
+        l2c = random.choice(l2cl)
+
+    if l2c == "any" and g2e == "any":
+        align = random.choice(l2cl) + random.choice(g2el)
+        return align
+
+    elif l2c == "any" and g2e != "any":
+        align = random.choice(l2cl) + g2e
+        return align
+
+    elif l2c != "any" and g2e == "any":
+        align = l2c + random.choice(g2el)
+        return align
+
+    else:
+        return l2c + g2e

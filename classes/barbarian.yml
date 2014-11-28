@@ -2,6 +2,9 @@
 # if you can select one of several different options,
 # put them under special as a list, like [thing1, thing2, thing3] and
 # one will be randomly selected.
+alignment:
+- non L
+- any
 class skills:
 - Acrobatics
 - Climb

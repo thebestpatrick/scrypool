@@ -332,6 +332,9 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     char_sheet += "fort save: " + str(classfile["level 1"]["fortsave"]) + "\n"
     char_sheet += "reflex save: " + str(classfile["level 1"]["refsave"]) + "\n"
     char_sheet += "will save: " + str(classfile["level 1"]["willsave"]) + "\n"
+    alignment = fg.pick_alignment(list(classfile["alignment"]))
+    char_sheet += "alignment: " + alignment + "\n"
+    char_sheet += "deity: " + str(fg.pick_deity(alignment)) + "\n"
 
     if str(classfile["magic type"]) == "None":
         pass

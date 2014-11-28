@@ -1,0 +1,62 @@
+# A deity list and summary, mostly useful for clerics, but could add color to
+# other characters as well.
+# Need to fill this list out a bit more, it should work for now, but more are always nice.
+- name: Erastil
+  alignment: LG
+  gender: m
+  portfolio:
+  - farming
+  - hunting
+  - trade
+  - family
+  weapon: longbow
+  domains:
+  - animal
+  - community
+  - good
+  - law
+  - plant
+- name: Asmodeus
+  alignment: LE
+  gender: m
+  portfolio:
+  - tyranny
+  - slavery
+  - pride
+  - contracts
+  weapon: mace
+  domains:
+  - evil
+  - fire
+  - law
+  - magic
+  - trickery
+- name: Cayden Cailen
+  alignment: CG
+  gender: m
+  portfolio:
+  - freedom
+  - ale
+  - wine
+  - bravery
+  weapon: rapier
+  domains:
+  - chaos
+  - charm
+  - good
+  - strength
+  - travel
+- name: Rovagug
+  alignment: CE
+  gender: m
+  portfolio:
+  - wrath
+  - disaster
+  - distruction
+  weapon: greataxe
+  domains:
+  - chaos
+  - destruction
+  - evil
+  - war
+  - weather
