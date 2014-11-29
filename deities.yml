@@ -1,6 +1,7 @@
 # A deity list and summary, mostly useful for clerics, but could add color to
 # other characters as well.
 # Need to fill this list out a bit more, it should work for now, but more are always nice.
+# This will probably be one of the first files to get modified for particular campaigns.
 - name: Erastil
   alignment: LG
   gender: m
@@ -60,3 +61,62 @@
   - evil
   - war
   - weather
+- name: Iomedae
+  alignment: LG
+  gender: f
+  portfolio:
+  - valor
+  - rulership
+  - justice
+  - honor
+  weapon: longsword
+  domains:
+  - glory
+  - good
+  - law
+  - sun
+  - war
+- name: Desna
+  alignment: CG
+  gender: f
+  portfolio:
+  - dreams
+  - stars
+  - travelers
+  - luck
+  weapon: starknife
+  domains:
+  - chaos
+  - good
+  - liberation
+  - travel
+  - luck
+- name: Lamashtu
+  alignment: CE
+  gender: f
+  portfolio:
+  - madness
+  - monsters
+  - nightmares
+  weapon: falchion
+  domains:
+  - chaos
+  - evil
+  - madness
+  - strength
+  - trickery
+- name: Zon-Kuthon
+  alignment: LE
+  gender: f
+  portfolio:
+  - envy
+  - pain
+  - darkness
+  - loss
+  weapon: spiked chain
+  domains:
+  - darkness
+  - death
+  - destruction
+  - evil
+  - law

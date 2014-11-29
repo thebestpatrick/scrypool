@@ -251,8 +251,11 @@ def parse_specials(character_file):
 
 
 def pick_init_skills(character_file, class_skills):
-    """Only useful during character creation, really this should all get the same treatment of feats...
-    but that sounds hard, and no one cares about skills anyway."""
+    """
+    Picks out a suite of skills from class skills and adds them to character file in form skill: 1
+    Only useful during character creation, really this should all get the same treatment of feats...
+    but that sounds hard, and no one cares about skills anyway.
+    """
     characterfile = yaml.load(str(character_file))
 
     for key in characterfile["class"]:  # like this won't work except in creation.
@@ -274,6 +277,12 @@ def pick_init_skills(character_file, class_skills):
         # Pick random skills?  should never happen
         x += 1
     return skills
+
+
+def pick_domains(domainlist):
+    random.shuffle(domainlist)
+    chosendomains = [domainlist.pop(), domainlist.pop()]
+    return chosendomains
 
 
 def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and clunking, will need optimizing
@@ -332,9 +341,12 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     char_sheet += "fort save: " + str(classfile["level 1"]["fortsave"]) + "\n"
     char_sheet += "reflex save: " + str(classfile["level 1"]["refsave"]) + "\n"
     char_sheet += "will save: " + str(classfile["level 1"]["willsave"]) + "\n"
+
     alignment = fg.pick_alignment(list(classfile["alignment"]))
     char_sheet += "alignment: " + alignment + "\n"
-    char_sheet += "deity: " + str(fg.pick_deity(alignment)) + "\n"
+
+    deity = str(fg.pick_deity(alignment))
+    char_sheet += "deity: " + deity + "\n"
 
     if str(classfile["magic type"]) == "None":
         pass
@@ -345,8 +357,19 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
         pass
         # Handle bard spell formation here
     elif str(classfile["magic type"]) == "Divine":
-        pass
         # Handle cleric and similar spell formation
+        # first, domains
+        deities = yaml.load(open('deities.yml').read())
+        for zzz in deities:
+            if zzz["name"] == deity:
+                domains = pick_domains(zzz["domains"])
+            else:
+                pass
+        char_sheet += "domains: \n- " + domains[0] + "\n- " + domains[1] + "\n"
+
+        # Now add the spells per day for first level
+        char_sheet += "spells per day: \n" + yaml.dump(classfile["level 1"]["spells per day"]) + "\n"
+
     elif str(classfile["magic type"]) == "Druid":
         pass
         # Handle druid spell formation

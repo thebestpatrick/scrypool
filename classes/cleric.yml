@@ -1,0 +1,38 @@
+alignment:
+- any
+- any
+class skills:
+- Appraise
+- Craft
+- Diplomacy
+- Heal
+- Knowledge (arcana)
+- Knowledge (history)
+- Knowledge (nobility)
+- Knowledge (planes)
+- Knowledge (religion)
+- Linguistics
+- Profession
+- Sense Motive
+- Spellcraft
+prefstats:
+- WS
+- CH
+skills per rank: 2
+starting gp: 4d6 × 10 gp
+hit die: 8
+magic type: Divine
+
+level 1:
+  baseattack: 1
+  fortsave: 2
+  refsave: 0
+  willsave: 2
+  special:
+  - aura
+  - channel energy 1d6
+  - domains
+  - orisons
+  spells per day:
+  - zero: 3
+  - first: 1
