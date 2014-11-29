@@ -75,7 +75,7 @@ def name_gen_eng(gender):
 def gen_name(gender, race):
     """Returns a random name given gender and race"""
     try:
-        all = yaml.load(open('races/' + race + '.yml').read())
+        all = yaml.safe_load(open('races/' + race + '.yml').read())
         male_names_common = all["male common names"]
         male_names_uncommon = all["male uncommon names"]
     
@@ -249,7 +249,7 @@ def pick_deity(alignment):
 
 
     try:
-        deitylist = yaml.load(open('deities.yml').read())
+        deitylist = yaml.safe_load(open('deities.yml').read())
         random.shuffle(deitylist)
     except:
         pass

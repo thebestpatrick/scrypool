@@ -28,7 +28,7 @@ def regular_stat_roll(char_class):  # UNFINISHED....FIXME!
     ]
     arr = sorted(arr, reverse=True)
     
-    classfile = yaml.load(open('classes/' + char_class + '.yml').read())
+    classfile = yaml.safe_load(open('classes/' + char_class + '.yml').read())
     
     stats = ["ST", "DX", "CN", "WS", "IQ", "CH"]
     # UNFINISHED
@@ -47,7 +47,7 @@ def regular_stat_roll(char_class):  # UNFINISHED....FIXME!
 
 def kind_stat_roll(char_class):
     """Rolls 3d6, then makes sure that all important stats are above 13"""
-    classfile = yaml.load(open('classes/' + char_class + '.yml').read())
+    classfile = yaml.safe_load(open('classes/' + char_class + '.yml').read())
     prefstats = classfile["prefstats"]
 
     while True:
@@ -72,7 +72,7 @@ def kind_stat_roll(char_class):
 
 def extra_kind_stat_roll(char_class):
     """Rolls 4d6, picks best three, then makes sure all the important stats are over 13"""
-    classfile = yaml.load(open('classes/' + char_class + '.yml').read())
+    classfile = yaml.safe_load(open('classes/' + char_class + '.yml').read())
     prefstats = classfile["prefstats"]
     while True:
         arr = [
@@ -120,8 +120,8 @@ def pick_feat(tags, character_file):  # tags is a list
 ## Totally threw out everything here. starting fresh
 ## git commit 68c8cdfbbc66322545ac910e29b6f8205113b60a had last version
 
-    characterfile = yaml.load(str(character_file))
-    feats = yaml.load(open("feats.yml"))
+    characterfile = yaml.safe_load(str(character_file))
+    feats = yaml.safe_load(open("feats.yml"))
     random.shuffle(feats)
     ranktobeat = 0
     finalchoice = "Toughness"  # just so it has a default.
@@ -228,7 +228,7 @@ def parse_specials(character_file):
     """A function for taking race and class special features, like bonus feat,
     and turning them into the thing that they mean, then returning the proper list of specials."""
     finlist = list()
-    characterfile = yaml.load(character_file)
+    characterfile = yaml.safe_load(character_file)
     
     for s in characterfile["specials"]:
         if isinstance(s, list):
@@ -256,10 +256,10 @@ def pick_init_skills(character_file, class_skills):
     Only useful during character creation, really this should all get the same treatment of feats...
     but that sounds hard, and no one cares about skills anyway.
     """
-    characterfile = yaml.load(str(character_file))
+    characterfile = yaml.safe_load(str(character_file))
 
     for key in characterfile["class"]:  # like this won't work except in creation.
-        classfile = yaml.load(open('classes/' + key + '.yml').read())
+        classfile = yaml.safe_load(open('classes/' + key + '.yml').read())
 
     # Get skill points
     skill_points = cfunc.statmod(characterfile["IQ"]) + classfile["skills per rank"]
@@ -301,9 +301,9 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     ## Open the needed files and make sure they work before we go farther
     ## Should probably, at some point, move these to a database access system.
 
-    racefile = yaml.load(open('races/' + char_race + '.yml').read())
+    racefile = yaml.safe_load(open('races/' + char_race + '.yml').read())
 
-    classfile = yaml.load(open('classes/' + char_class + '.yml').read())
+    classfile = yaml.safe_load(open('classes/' + char_class + '.yml').read())
 
     char_sheet += "base attack: " + str(classfile["level 1"]["baseattack"]) + "\n"
 
@@ -359,7 +359,7 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     elif str(classfile["magic type"]) == "Divine":
         # Handle cleric and similar spell formation
         # first, domains
-        deities = yaml.load(open('deities.yml').read())
+        deities = yaml.safe_load(open('deities.yml').read())
         for zzz in deities:
             if zzz["name"] == deity:
                 domains = pick_domains(zzz["domains"])
