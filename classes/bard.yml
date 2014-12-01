@@ -1,0 +1,49 @@
+alignment:
+- any
+- any
+class skills:
+- Acrobatics
+- Appraise
+- Bluff
+- Climb
+- Craft
+- Diplomacy
+- Disguise
+- Escape artist
+- Intimidate
+- Knowledge (all)
+- Linguistics
+- Perception
+- Perform
+- Profession
+- Sense Motive
+- Sleight of hand
+- Stealth
+- Spellcraft
+- Use magic device
+prefstats:
+- DX
+- CH
+skills per rank: 6
+starting gp: 4d6 × 10 gp
+hit die: 8
+magic type: Arcane
+
+level 1:
+  baseattack: 0
+  fortsave: 0
+  refsave: 2
+  willsave: 2
+  special:
+  - bardic knowledge
+  - bardic performance
+  - cantrips
+  - countersong
+  - distraction
+  - fascinate
+  - inspire courage 1
+  spells known:
+  - zero: 4
+  - first: 2
+  spells per day:
+  - first: 1

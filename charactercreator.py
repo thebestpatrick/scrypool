@@ -225,7 +225,7 @@ def pick_feat(tags, character_file):  # tags is a list
 
 
 def parse_specials(character_file):
-    """A function for taking race and class special features, like bonus feat,
+    """A function for taking race and class special features, like bonus feat and domains,
     and turning them into the thing that they mean, then returning the proper list of specials."""
     finlist = list()
     characterfile = yaml.safe_load(character_file)
@@ -244,6 +244,17 @@ def parse_specials(character_file):
             # pick a fighter bonus feat
             characterfile["specials"].remove(s)
             characterfile["feats"].append(pick_feat(["fighter bonus", ], characterfile))
+        elif s == "domains":
+            deities = yaml.safe_load(open('deities.yml').read())
+            domains = ["failure","unusual errors"]
+            for zzz in deities:
+                if zzz["name"] == characterfile["deity"]:
+                    domains = pick_domains(zzz["domains"])
+                    break
+                else:
+                    pass
+            #characterfile += "domains: \n- " + domains[0] + "\n- " + domains[1] + "\n"
+            characterfile["domains"] = domains
         else: 
             # stuff
             pass  # doing nothing I guess?
@@ -353,40 +364,18 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     elif str(classfile["magic type"]) == "Arcane":
         pass
         # Handle Wizard and sorcerer spell formation here
-    elif str(classfile["magic type"]) == "Bard":
-        pass
-        # Handle bard spell formation here
     elif str(classfile["magic type"]) == "Divine":
         # Handle cleric and similar spell formation
-        # first, domains
-        deities = yaml.safe_load(open('deities.yml').read())
-        for zzz in deities:
-            if zzz["name"] == deity:
-                domains = pick_domains(zzz["domains"])
-            else:
-                pass
-        char_sheet += "domains: \n- " + domains[0] + "\n- " + domains[1] + "\n"
-
         # Now add the spells per day for first level
         char_sheet += "spells per day: \n" + yaml.dump(classfile["level 1"]["spells per day"]) + "\n"
-
-    elif str(classfile["magic type"]) == "Druid":
-        pass
-        # Handle druid spell formation
-    elif str(classfile["magic type"]) == "Paladin":
-        pass
-        # Handle Paladin spell formation
-    elif str(classfile["magic type"]) == "Ranger":
-        pass
-        # Handle Ranger spell formation\
     else:
         pass
         # Might be tricky, but handle this oddity some other way
-    
+
     ##
     ## this section here definitely deserves special treatment
     ## like to add specific skills when called for, or add bonus feats
-    ## when necessary, without cluttering the specials section of 
+    ## when necessary, without cluttering the specials section of
     ## the character sheet
     ## 
 

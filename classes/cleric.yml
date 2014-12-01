@@ -24,7 +24,7 @@ hit die: 8
 magic type: Divine
 
 level 1:
-  baseattack: 1
+  baseattack: 0
   fortsave: 2
   refsave: 0
   willsave: 2
