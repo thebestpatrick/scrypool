@@ -1,6 +1,7 @@
 #!/usr/bin/python3.3
 
 import yaml
+import math
 import cfunc
 import roll
 import random
@@ -35,7 +36,6 @@ def regular_stat_roll(char_class):  # UNFINISHED....FIXME!
      # basically I want this section to juggle the stats into a proper order for me,
      # based on the preferred stats of the class
     prefstats = classfile["prefstats"]
-    finarr = []
     for i in stats:
         if i in prefstats:
             pass
@@ -296,8 +296,13 @@ def pick_domains(domainlist):
     return chosendomains
 
 
-def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and clunking, will need optimizing
-    """Given a race and class, returns a yaml formatted character sheet"""
+# Seems rather slow and clunking, will need optimizing
+def yaml_create_character(char_race, char_class, mods="none", alignment='pick'):
+    """
+    Given a race and class, returns a yaml formatted character sheet.
+    mods should be given as a list if any are desired.
+    alignment should be in the 'CG' style or 'pick'. other inputs could be stupid.
+    """
     genders = ["m", "f"]
     gender = random.choice(genders)
     name = fg.gen_name(gender, char_race)
@@ -354,22 +359,24 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     # char_sheet["fort save"] = classfile["level 1"]["fortsave"]
     # char_sheet["reflex save"] = classfile["level 1"]["refsave"]
     # char_sheet["will save"] = classfile["level 1"]["willsave"]
-
-    alignment = fg.pick_alignment(list(classfile["alignment"]))
+    if alignment == 'pick':
+        alignment = fg.pick_alignment(list(classfile["alignment"]))
     char_sheet["alignment"] = alignment
 
     deity = str(fg.pick_deity(alignment))
     char_sheet["deity"] = deity
 
+    # Looking at picking spells here, but writing the whole spell list would be a pain...
     if str(classfile["magic type"]) == "None":
         pass
     elif str(classfile["magic type"]) == "Arcane":
-        pass
-        # Handle Wizard and sorcerer spell formation here
-    elif str(classfile["magic type"]) == "Divine":
-        # Handle cleric and similar spell formation
-        # Now add the spells per day for first level
+        char_sheet["spells known"] = classfile["level 1"]["spells known"]
         char_sheet["spells per day"] = classfile["level 1"]["spells per day"]
+        char_sheet["spells per day"]["first"] += math.ceil(cfunc.statmod(char_sheet[classfile["magic stat"]])/4)
+
+    elif str(classfile["magic type"]) == "Divine":
+        char_sheet["spells per day"] = classfile["level 1"]["spells per day"]
+        char_sheet["spells per day"]["first"] += math.ceil(cfunc.statmod(char_sheet[classfile["magic stat"]])/4)
     else:
         pass
         # Might be tricky, but handle this oddity some other way

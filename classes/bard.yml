@@ -11,7 +11,7 @@ class skills:
 - Disguise
 - Escape artist
 - Intimidate
-- Knowledge (all)
+- Knowledge (all) # this line is stupid. needs changing.
 - Linguistics
 - Perception
 - Perform
@@ -28,6 +28,7 @@ skills per rank: 6
 starting gp: 4d6 × 10 gp
 hit die: 8
 magic type: Arcane
+magic stat: CH
 
 level 1:
   baseattack: 0
@@ -43,7 +44,7 @@ level 1:
   - fascinate
   - inspire courage 1
   spells known:
-  - zero: 4
-  - first: 2
+    zero: 4
+    first: 2
   spells per day:
-  - first: 1
+    first: 1
