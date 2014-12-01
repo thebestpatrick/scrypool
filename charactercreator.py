@@ -115,12 +115,12 @@ def check_stat_prereqs(prereq, charactersheet):
 
 
 def pick_feat(tags, character_file):  # tags is a list
-    """Picks a feat using score rankings on the list."""
+    """Picks a feat using score rankings on the list.  Returns feat as single entry list"""
     # Not super efficient, so don't call it too much
 ## Totally threw out everything here. starting fresh
 ## git commit 68c8cdfbbc66322545ac910e29b6f8205113b60a had last version
 
-    characterfile = yaml.safe_load(str(character_file))
+    # characterfile = yaml.safe_load(str(character_file))
     feats = yaml.safe_load(open("feats.yml"))
     random.shuffle(feats)
     ranktobeat = 0
@@ -128,7 +128,7 @@ def pick_feat(tags, character_file):  # tags is a list
 
     # Load the feats there are now for later use
     try:
-        charfeats = characterfile["feats"]
+        charfeats = character_file["feats"]
     except:
         charfeats = []
     for f in feats:
@@ -136,7 +136,7 @@ def pick_feat(tags, character_file):  # tags is a list
         rank = f["score"]
         # make sure its not already picked
         try:
-            if f["name"] in characterfile["feats"]:
+            if f["name"] in character_file["feats"]:
                 continue
         except:
             pass
@@ -150,7 +150,7 @@ def pick_feat(tags, character_file):  # tags is a list
         # # # # WORK GOES HERE # # # #
 
         try:
-            if f["prereqs"]["caster level"] > cfunc.get_caster_level(characterfile):
+            if f["prereqs"]["caster level"] > cfunc.get_caster_level(character_file):
                 continue
         except:
             pass
@@ -159,7 +159,7 @@ def pick_feat(tags, character_file):  # tags is a list
         # Check stat prereqs
         try: 
             for s in f["prereqs"]["stats"]:
-                z = check_stat_prereqs(str(s), characterfile)
+                z = check_stat_prereqs(str(s), character_file)
                 if z:
                     rank += 5
                 else:
@@ -172,7 +172,7 @@ def pick_feat(tags, character_file):  # tags is a list
 
         # Check Base attack prereq
         try:
-            if f["prereqs"]["base attack"] >= characterfile["base attack"]:
+            if f["prereqs"]["base attack"] >= character_file["base attack"]:
                 stupidcrap = f + " wut?"  # FIXME I have no idea what this does...
                 # if you remove stupid crap here...the whole thing breaks when
                 # a feat has a base attack requirement?  what the actual fuck?
@@ -204,7 +204,7 @@ def pick_feat(tags, character_file):  # tags is a list
                 rank += 10  # add ten for every matching tag.
 
         # add twenty if the class is called out.
-        if characterfile["class"] in f["tags"]:
+        if character_file["class"] in f["tags"]:
             rank += 20
 
         # if the name of the feat is tagged, probably want to give it to them
@@ -221,44 +221,44 @@ def pick_feat(tags, character_file):  # tags is a list
             # pick randomly
             if roll.roll(1, 3) >= 1:
                 finalchoice = f["name"]
-    return finalchoice
+    return [finalchoice, ]
 
 
 def parse_specials(character_file):
     """A function for taking race and class special features, like bonus feat and domains,
     and turning them into the thing that they mean, then returning the proper list of specials."""
     finlist = list()
-    characterfile = yaml.safe_load(character_file)
+    # characterfile = yaml.safe_load(character_file)
     
-    for s in characterfile["specials"]:
+    for s in character_file["specials"]:
         if isinstance(s, list):
             alpha = random.choice(s)
-            characterfile["specials"].remove(s)
-            characterfile["specials"].append(alpha)
-            parse_specials(yaml.dump(characterfile))
+            character_file["specials"].remove(s)
+            character_file["specials"].append(alpha)
+            parse_specials(yaml.dump(character_file))
         elif s == "bonus feat":
             # pick a generic bonus feat
-            characterfile["specials"].remove(s)
-            characterfile["feats"].append(pick_feat([], characterfile))  # FIXME maybe get tags arg 1?
+            character_file["specials"].remove(s)
+            character_file["feats"] += pick_feat([], character_file)  # FIXME maybe get tags arg 1?
         elif s == "fighter bonus feat":
             # pick a fighter bonus feat
-            characterfile["specials"].remove(s)
-            characterfile["feats"].append(pick_feat(["fighter bonus", ], characterfile))
+            character_file["specials"].remove(s)
+            character_file["feats"] += pick_feat(["fighter bonus", ], character_file)
         elif s == "domains":
             deities = yaml.safe_load(open('deities.yml').read())
-            domains = ["failure","unusual errors"]
+            domains = ["failure", "unusual errors"]
             for zzz in deities:
-                if zzz["name"] == characterfile["deity"]:
+                if zzz["name"] == character_file["deity"]:
                     domains = pick_domains(zzz["domains"])
                     break
                 else:
                     pass
             #characterfile += "domains: \n- " + domains[0] + "\n- " + domains[1] + "\n"
-            characterfile["domains"] = domains
+            character_file["domains"] = domains
         else: 
             # stuff
             pass  # doing nothing I guess?
-    return characterfile
+    return character_file
 
 
 def pick_init_skills(character_file, class_skills):
@@ -267,23 +267,23 @@ def pick_init_skills(character_file, class_skills):
     Only useful during character creation, really this should all get the same treatment of feats...
     but that sounds hard, and no one cares about skills anyway.
     """
-    characterfile = yaml.safe_load(str(character_file))
+    # characterfile = yaml.safe_load(str(character_file))
 
-    for key in characterfile["class"]:  # like this won't work except in creation.
+    for key in character_file["class"]:  # like this won't work except in creation.
         classfile = yaml.safe_load(open('classes/' + key + '.yml').read())
 
     # Get skill points
-    skill_points = cfunc.statmod(characterfile["IQ"]) + classfile["skills per rank"]
-    if "skilled" in characterfile["specials"]:
+    skill_points = cfunc.statmod(character_file["IQ"]) + classfile["skills per rank"]
+    if "skilled" in character_file["specials"]:
         skill_points += 1
     x = 0
-    skills = ""
+    skills = {}
     random.shuffle(class_skills)
     if skill_points <= 0:
         skill_points = 1
     while x < skill_points:
         # Get new class skills
-        skills += class_skills.pop() + ": 1 \n  "
+        skills[class_skills.pop()] = 1
         # FIXME might get an error here with more skill points than skills
         # Pick random skills?  should never happen
         x += 1
@@ -301,12 +301,12 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     genders = ["m", "f"]
     gender = random.choice(genders)
     name = fg.gen_name(gender, char_race)
-    char_sheet = "name: " + name + "\n"
-    char_sheet += "gender: " + gender + "\n"
-    char_sheet += "race: " + char_race + "\n"
-    # char_sheet += "symbol: " + fg.coatofarms_gen() + "\n"
-    char_sheet += "class: \n  " + char_class + ": 1\n"
-
+    char_sheet = yaml.safe_load("name: " + name + "\n")
+    char_sheet["gender"] = gender
+    char_sheet["race"] = char_race
+    # char_sheet[ "symbol: " + fg.coatofarms_gen() + "\n"
+    interclassfile = {char_class: 1}
+    char_sheet["class"] = interclassfile
     initstats = kind_stat_roll(char_class)
     
     ## Open the needed files and make sure they work before we go farther
@@ -316,11 +316,10 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
 
     classfile = yaml.safe_load(open('classes/' + char_class + '.yml').read())
 
-    char_sheet += "base attack: " + str(classfile["level 1"]["baseattack"]) + "\n"
+    char_sheet["base attack"] = classfile["level 1"]["baseattack"]
 
     ## Apply Racial Bonuses
     adstats = cfunc.apply_race_stats(initstats, racefile, classfile)
-    #print(adstats)
     ## Make sure all of the stat values are possible.
     a = 0
     stats = ["ST", "DX", "CN", "WS", "IQ", "CH"]
@@ -329,17 +328,16 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
             adstats[a] = 3
         else:
             pass
-        char_sheet += stats[a] + ": " + str(adstats[a]) + "\n"
+        char_sheet[stats[a]] = adstats[a]
         a += 1
 
     # check both race file and class file for their respective specials
     speclist = classfile["level 1"]["special"] + racefile["race specials"]
-    char_sheet += "specials: \n" + yaml.dump(speclist, default_flow_style=False) + "\n"
-
-    char_sheet += "size: " + racefile["size"] + "\n"
-    char_sheet += "speed: " + str(racefile["speed"]) + "\n"
-    char_sheet += "skills: \n  " + pick_init_skills(char_sheet, classfile["class skills"]) + "\n"
-    char_sheet += "feats: \n- " + pick_feat(mods, char_sheet) + "\n"
+    char_sheet["specials"] = speclist
+    char_sheet["size"] = racefile["size"]
+    char_sheet["speed"] = racefile["speed"]
+    char_sheet["skills"] = pick_init_skills(char_sheet, classfile["class skills"])
+    char_sheet["feats"] = pick_feat(mods, char_sheet)
     
     ##
     ## this section could be chopped out and moved to the 'level up' function, since its just
@@ -347,17 +345,21 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     ## since it is kind of unique handling at level one.  
     ## 
     
-    char_sheet += "total hp: " + str(classfile["hit die"] + cfunc.nstatmod(adstats[2])) + "\n"
-    char_sheet += "current hp: " + str(classfile["hit die"] + cfunc.nstatmod(adstats[2])) + "\n"
-    char_sheet += "fort save: " + str(classfile["level 1"]["fortsave"]) + "\n"
-    char_sheet += "reflex save: " + str(classfile["level 1"]["refsave"]) + "\n"
-    char_sheet += "will save: " + str(classfile["level 1"]["willsave"]) + "\n"
+    char_sheet["total hp"] = classfile["hit die"] + cfunc.nstatmod(adstats[2])
+    char_sheet["current hp"] = classfile["hit die"] + cfunc.nstatmod(adstats[2])
+
+    char_sheet["saves"] = {"fort": classfile["level 1"]["fortsave"],
+                           "reflex": classfile["level 1"]["refsave"],
+                           "will": classfile["level 1"]["willsave"]}
+    # char_sheet["fort save"] = classfile["level 1"]["fortsave"]
+    # char_sheet["reflex save"] = classfile["level 1"]["refsave"]
+    # char_sheet["will save"] = classfile["level 1"]["willsave"]
 
     alignment = fg.pick_alignment(list(classfile["alignment"]))
-    char_sheet += "alignment: " + alignment + "\n"
+    char_sheet["alignment"] = alignment
 
     deity = str(fg.pick_deity(alignment))
-    char_sheet += "deity: " + deity + "\n"
+    char_sheet["deity"] = deity
 
     if str(classfile["magic type"]) == "None":
         pass
@@ -367,7 +369,7 @@ def yaml_create_character(char_race, char_class, mods):  # Seems rather slow and
     elif str(classfile["magic type"]) == "Divine":
         # Handle cleric and similar spell formation
         # Now add the spells per day for first level
-        char_sheet += "spells per day: \n" + yaml.dump(classfile["level 1"]["spells per day"]) + "\n"
+        char_sheet["spells per day"] = classfile["level 1"]["spells per day"]
     else:
         pass
         # Might be tricky, but handle this oddity some other way
