@@ -1,0 +1,45 @@
+alignment:
+- any
+- any
+class skills:
+- Acrobatics
+- Appraise
+- Bluff
+- Climb
+- Craft
+- Diplomacy
+- Disable device
+- Disguise
+- Escape artist
+- Intimidate
+- Knowledge (dungeoneering)
+- Knowledge (local)
+- Linguistics
+- Perception
+- Perform
+- Profession
+- Sense Motive
+- Sleight of hand
+- Stealth
+- Swim
+- Use magic device
+prefstats:
+- DX
+- ST
+skills per rank: 6
+starting gp: 4d6 × 10 gp
+hit die: 10
+magic type: Divine
+magic stat: WS
+
+level 1:
+  baseattack: 1
+  fortsave: 2
+  refsave: 2
+  willsave: 0
+  special:
+  - favored enemy
+  - track
+  - wild empathy
+  spells per day:
+    first: 0

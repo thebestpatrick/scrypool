@@ -1,0 +1,40 @@
+alignment:
+- any
+- any
+class skills:
+- Acrobatics
+- Appraise
+- Bluff
+- Climb
+- Craft
+- Diplomacy
+- Disable device
+- Disguise
+- Escape artist
+- Intimidate
+- Knowledge (dungeoneering)
+- Knowledge (local)
+- Linguistics
+- Perception
+- Perform
+- Profession
+- Sense Motive
+- Sleight of hand
+- Stealth
+- Swim
+- Use magic device
+prefstats:
+- DX
+skills per rank: 8
+starting gp: 4d6 × 10 gp
+hit die: 8
+magic type: None
+
+level 1:
+  baseattack: 0
+  fortsave: 0
+  refsave: 2
+  willsave: 0
+  special:
+  - sneak attack 1d6
+  - trapfinding

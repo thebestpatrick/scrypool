@@ -225,10 +225,10 @@ def pick_feat(tags, character_file):  # tags is a list
 
 
 def parse_specials(character_file):
-    """A function for taking race and class special features, like bonus feat and domains,
-    and turning them into the thing that they mean, then returning the proper list of specials."""
-    finlist = list()
-    # characterfile = yaml.safe_load(character_file)
+    """
+    A function for taking race and class special features, like bonus feat and domains,
+    and turning them into the thing that they mean, then returning the proper list of specials.
+    """
     
     for s in character_file["specials"]:
         if isinstance(s, list):
@@ -245,6 +245,7 @@ def parse_specials(character_file):
             character_file["specials"].remove(s)
             character_file["feats"] += pick_feat(["fighter bonus", ], character_file)
         elif s == "domains":
+            character_file["specials"].remove(s)
             deities = yaml.safe_load(open('deities.yml').read())
             domains = ["failure", "unusual errors"]
             for zzz in deities:
@@ -253,9 +254,35 @@ def parse_specials(character_file):
                     break
                 else:
                     pass
-            #characterfile += "domains: \n- " + domains[0] + "\n- " + domains[1] + "\n"
             character_file["domains"] = domains
-        else: 
+        elif s == "favored enemy": # This favored enemy stuff should be useful later for rogue talents
+            # and even the ranger weapon tree.
+            character_file["specials"].remove(s)
+            # Get what is there.  if there is one, add to it.
+            try:
+                current_favored_enemy_info = character_file["favored enemies"]
+                random.shuffle(current_favored_enemy_info)
+                for anenemy in current_favored_enemy_info:
+                    for key, value in anenemy.items():
+                        current_favored_enemy_info[0][key] += 2
+                        break
+                break
+            except:
+                current_favored_enemy_info = {}
+            # open file and pick one
+            enemies = yaml.safe_load(open('classes/misc/favored enemies.yml').read())
+            for e in enemies:
+                enemy = random.choice(enemies)
+                # make sure it hasn't been picked before
+                if enemy in current_favored_enemy_info:
+                    # THIS PART IS ALL FUCKED UP....WORK ON IT
+                    pass
+                else:
+                    # apply it
+                    character_file["favored enemies"] += [{enemy: 2}]
+                    break
+
+        else:
             # stuff
             pass  # doing nothing I guess?
     return character_file
@@ -267,8 +294,6 @@ def pick_init_skills(character_file, class_skills):
     Only useful during character creation, really this should all get the same treatment of feats...
     but that sounds hard, and no one cares about skills anyway.
     """
-    # characterfile = yaml.safe_load(str(character_file))
-
     for key in character_file["class"]:  # like this won't work except in creation.
         classfile = yaml.safe_load(open('classes/' + key + '.yml').read())
 
@@ -381,16 +406,9 @@ def yaml_create_character(char_race, char_class, mods="none", alignment='pick'):
         pass
         # Might be tricky, but handle this oddity some other way
 
-    ##
-    ## this section here definitely deserves special treatment
-    ## like to add specific skills when called for, or add bonus feats
-    ## when necessary, without cluttering the specials section of
-    ## the character sheet
-    ## 
-
     # Pass the string in for post processing, things like feat assignment and some 
     # parsing work regarding it.
-    
+
     char_sheet = parse_specials(char_sheet)
 
     return char_sheet
