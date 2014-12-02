@@ -117,8 +117,6 @@ def check_stat_prereqs(prereq, charactersheet):
 def pick_feat(tags, character_file):  # tags is a list
     """Picks a feat using score rankings on the list.  Returns feat as single entry list"""
     # Not super efficient, so don't call it too much
-## Totally threw out everything here. starting fresh
-## git commit 68c8cdfbbc66322545ac910e29b6f8205113b60a had last version
 
     # characterfile = yaml.safe_load(str(character_file))
     feats = yaml.safe_load(open("feats.yml"))
@@ -146,8 +144,6 @@ def pick_feat(tags, character_file):  # tags is a list
             continue
 
         ## check prereqs
-        
-        # # # # WORK GOES HERE # # # #
 
         try:
             if f["prereqs"]["caster level"] > cfunc.get_caster_level(character_file):
@@ -203,24 +199,24 @@ def pick_feat(tags, character_file):  # tags is a list
             if x in f["tags"]:
                 rank += 10  # add ten for every matching tag.
 
-        # add twenty if the class is called out.
-        if character_file["class"] in f["tags"]:
-            rank += 20
+            # add twenty if the class is called out.
+            if character_file["class"] in f["tags"]:
+                rank += 20
 
-        # if the name of the feat is tagged, probably want to give it to them
-        if f["name"] in tags:
-            rank += 175
-        
-        ## end of rankings, make call
-        if rank > ranktobeat:
-            finalchoice = f["name"]
-            ranktobeat = rank
-        elif rank < ranktobeat:
-            pass
-        else:
-            # pick randomly
-            if roll.roll(1, 3) >= 1:
+            # if the name of the feat is tagged, probably want to give it to them
+            if f["name"] in tags:
+                rank += 175
+
+            ## end of rankings, make call
+            if rank > ranktobeat:
                 finalchoice = f["name"]
+                ranktobeat = rank
+            elif rank < ranktobeat:
+                pass
+            else:
+                # pick randomly
+                if roll.roll(1, 3) >= 1:
+                    finalchoice = f["name"]
     return [finalchoice, ]
 
 
@@ -229,23 +225,26 @@ def parse_specials(character_file):
     A function for taking race and class special features, like bonus feat and domains,
     and turning them into the thing that they mean, then returning the proper list of specials.
     """
-    
+    deadlist = []
     for s in character_file["specials"]:
         if isinstance(s, list):
             alpha = random.choice(s)
-            character_file["specials"].remove(s)
+            deadlist += [s,]
             character_file["specials"].append(alpha)
-            parse_specials(yaml.dump(character_file))
-        elif s == "bonus feat":
+            parse_specials(character_file)
+
+        if s == "bonus feat":
             # pick a generic bonus feat
-            character_file["specials"].remove(s)
+            deadlist += [s,]
             character_file["feats"] += pick_feat([], character_file)  # FIXME maybe get tags arg 1?
+
         elif s == "fighter bonus feat":
             # pick a fighter bonus feat
-            character_file["specials"].remove(s)
+            deadlist += [s,]
             character_file["feats"] += pick_feat(["fighter bonus", ], character_file)
+
         elif s == "domains":
-            character_file["specials"].remove(s)
+            deadlist += [s,]
             deities = yaml.safe_load(open('deities.yml').read())
             domains = ["failure", "unusual errors"]
             for zzz in deities:
@@ -255,9 +254,10 @@ def parse_specials(character_file):
                 else:
                     pass
             character_file["domains"] = domains
+
         elif s == "favored enemy": # This favored enemy stuff should be useful later for rogue talents
             # and even the ranger weapon tree.
-            character_file["specials"].remove(s)
+            deadlist += [s,]
             # Get what is there.  if there is one, add to it.
             try:
                 current_favored_enemy_info = character_file["favored enemies"]
@@ -269,6 +269,7 @@ def parse_specials(character_file):
                 break
             except:
                 current_favored_enemy_info = {}
+                character_file["favored enemies"] = []
             # open file and pick one
             enemies = yaml.safe_load(open('classes/misc/favored enemies.yml').read())
             for e in enemies:
@@ -284,7 +285,9 @@ def parse_specials(character_file):
 
         else:
             # stuff
-            pass  # doing nothing I guess?
+            continue  # doing nothing I guess?
+    for bullet in deadlist:
+        character_file["specials"].remove(bullet)
     return character_file
 
 
@@ -316,17 +319,21 @@ def pick_init_skills(character_file, class_skills):
 
 
 def pick_domains(domainlist):
+    """
+    Picks two random domains from a list and returns a list of them.
+    really, converts any list into a list with two random items
+    """
     random.shuffle(domainlist)
     chosendomains = [domainlist.pop(), domainlist.pop()]
     return chosendomains
 
 
 # Seems rather slow and clunking, will need optimizing
-def yaml_create_character(char_race, char_class, mods="none", alignment='pick'):
+def yaml_create_character(char_race, char_class, mods='none', alignment='pick'):
     """
     Given a race and class, returns a yaml formatted character sheet.
     mods should be given as a list if any are desired.
-    alignment should be in the 'CG' style or 'pick'. other inputs could be stupid.
+    alignment should be in the 'CG' style or 'pick'. other inputs WILL be stupid.
     """
     genders = ["m", "f"]
     gender = random.choice(genders)
@@ -381,9 +388,6 @@ def yaml_create_character(char_race, char_class, mods="none", alignment='pick'):
     char_sheet["saves"] = {"fort": classfile["level 1"]["fortsave"],
                            "reflex": classfile["level 1"]["refsave"],
                            "will": classfile["level 1"]["willsave"]}
-    # char_sheet["fort save"] = classfile["level 1"]["fortsave"]
-    # char_sheet["reflex save"] = classfile["level 1"]["refsave"]
-    # char_sheet["will save"] = classfile["level 1"]["willsave"]
     if alignment == 'pick':
         alignment = fg.pick_alignment(list(classfile["alignment"]))
     char_sheet["alignment"] = alignment
@@ -408,7 +412,6 @@ def yaml_create_character(char_race, char_class, mods="none", alignment='pick'):
 
     # Pass the string in for post processing, things like feat assignment and some 
     # parsing work regarding it.
-
     char_sheet = parse_specials(char_sheet)
 
     return char_sheet
