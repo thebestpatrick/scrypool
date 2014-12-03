@@ -120,3 +120,62 @@
   - destruction
   - evil
   - law
+- name: Sarenrae
+  alignment: NG
+  gender: f
+  portfolio:
+  - sun
+  - redemption
+  - honesty
+  - healing
+  weapon: scimitar
+  domains:
+  - fire
+  - glory
+  - good
+  - healing
+  - sun
+- name: Norgorber
+  alignment: NE
+  gender: m
+  portfolio:
+  - greed
+  - secrets
+  - poison
+  - murder
+  weapon: short sword
+  domains:
+  - charm
+  - death
+  - evil
+  - knowledge
+  - trickery
+- name: Abadar
+  alignment: LN
+  gender: m
+  portfolio:
+  - cities
+  - wealth
+  - merchants
+  - law
+  weapon: light crossbow
+  domains:
+  - earth
+  - law
+  - nobility
+  - protection
+  - travel
+- name: Calistra
+  alignment: CN
+  gender: f
+  portfolio:
+  - trickery
+  - lust
+  - revenge
+  weapon: whip
+  domains:
+  - chaos
+  - charm
+  - knowledge
+  - luck
+  - trickery

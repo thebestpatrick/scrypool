@@ -1,0 +1,26 @@
+# file to allow for all the domains to have their influence on character creation.
+# chaos as a demonstration domain for now, I don't like the organization yet
+# so this is almost definitely going to change.  it needs much more work.
+# will probably need a more robust magic system before this is really helpful.
+- chaos
+  domain spells:
+    1: protection from law
+    2: align weapon chaos
+    3: magic circle against chaos
+    4: chaos hammer
+    5: dispel law
+    6: animate objects
+    7: word of chaos
+    8: cloak of chaos
+    9: summon monster IX
+  specials:
+  - name: touch of chaos
+    type: sp
+    per day: 3 + WS
+    duration: 1
+    level: 1
+  - name: chaos blade
+    type: su
+    per day: 1
+    duration: .5 * cleric level
+    level: 8

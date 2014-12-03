@@ -196,6 +196,9 @@ def pick_feat(tags, character_file):  # tags is a list
         ## end of prereq checking
 
         for x in tags:
+        # moved all but the first entry here in to this loop.  Not sure why they were out of
+        # the loop, but maybe there was a reason.  In any case, they are in now, so any odd errors
+        # might be traced to here I guess.
             if x in f["tags"]:
                 rank += 10  # add ten for every matching tag.
 
@@ -226,25 +229,32 @@ def parse_specials(character_file):
     and turning them into the thing that they mean, then returning the proper list of specials.
     """
     deadlist = []
+    mods = []  # probably add a section that can allow people to add tags to their character sheet
     for s in character_file["specials"]:
         if isinstance(s, list):
             alpha = random.choice(s)
-            deadlist += [s,]
+            deadlist += [s, ]
             character_file["specials"].append(alpha)
-            parse_specials(character_file)
+            # parse_specials(character_file)
+
+        elif isinstance(s, dict):  # NOTE: dicts in class file specials will be processed as such
+            deadlist += [s, ]
+            for key, value in s.items():
+                character_file["specials"] += [key, ]
+                mods += [value, ]
 
         if s == "bonus feat":
             # pick a generic bonus feat
-            deadlist += [s,]
-            character_file["feats"] += pick_feat([], character_file)  # FIXME maybe get tags arg 1?
+            deadlist += [s, ]
+            character_file["feats"] += pick_feat(mods, character_file)  # FIXME maybe get tags arg 1?
 
         elif s == "fighter bonus feat":
             # pick a fighter bonus feat
-            deadlist += [s,]
+            deadlist += [s, ]
             character_file["feats"] += pick_feat(["fighter bonus", ], character_file)
 
         elif s == "domains":
-            deadlist += [s,]
+            deadlist += [s, ]
             deities = yaml.safe_load(open('deities.yml').read())
             domains = ["failure", "unusual errors"]
             for zzz in deities:

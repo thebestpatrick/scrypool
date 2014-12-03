@@ -6,7 +6,7 @@ import random
 #a = yaml.load(open("classes/barbarian.yml"))
 #b = yaml.load(open("races/human.yml"))
 # For testing everything
-print(yaml.dump(yaml_create_character("human", "fighter"), default_flow_style=False))
+print(yaml.dump(yaml_create_character("dwarf", "cleric"), default_flow_style=False))
 
 """character_file = ['fighter bonus feat', 'bonus feat', 'skilled']
 for s in character_file:
