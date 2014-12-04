@@ -8,9 +8,6 @@ import random
 
 import flavorgenerator as fg
 
-#config = json.loads(open('charactersheets/examplecharacter.json').read())
-# print(config["inventory"][0]["backpack"])
-
 
 def merciless_stat_roll():
     """Rolls 3d6 and sticks you with the result.  Probably not the best idea for most purposes."""
@@ -293,6 +290,10 @@ def parse_specials(character_file):
                     character_file["favored enemies"] += [{enemy: 2}]
                     break
 
+        # no need to have a bunch of smite 1, smite 2 hanging around
+        # elif isinstance(s[-1], int) and s[:-2] in character_file["specials"]:
+            # deadlist += [s, ]
+
         else:
             # stuff
             continue  # doing nothing I guess?
@@ -382,8 +383,11 @@ def yaml_create_character(char_race, char_class, mods='none', alignment='pick'):
     speclist = classfile["level 1"]["special"] + racefile["race specials"]
     char_sheet["specials"] = speclist
     char_sheet["size"] = racefile["size"]
-    char_sheet["speed"] = racefile["speed"]
+    char_sheet["base speed"] = racefile["speed"]
     char_sheet["skills"] = pick_init_skills(char_sheet, classfile["class skills"])
+
+    # should probably add weapon proficiencies in at this point too.
+    # this will require adding them to the class sheets.
     char_sheet["feats"] = pick_feat(mods, char_sheet)
     
     ##
@@ -400,6 +404,8 @@ def yaml_create_character(char_race, char_class, mods='none', alignment='pick'):
                            "will": classfile["level 1"]["willsave"]}
     if alignment == 'pick':
         alignment = fg.pick_alignment(list(classfile["alignment"]))
+    else:
+        alignment = fg.pick_alignment(list(classfile["alignment"]), alignment)
     char_sheet["alignment"] = alignment
 
     deity = str(fg.pick_deity(alignment))
@@ -411,11 +417,17 @@ def yaml_create_character(char_race, char_class, mods='none', alignment='pick'):
     elif str(classfile["magic type"]) == "Arcane":
         char_sheet["spells known"] = classfile["level 1"]["spells known"]
         char_sheet["spells per day"] = classfile["level 1"]["spells per day"]
-        char_sheet["spells per day"]["first"] += math.ceil(cfunc.statmod(char_sheet[classfile["magic stat"]])/4)
+        try:
+            char_sheet["spells per day"]["1"] += math.ceil(cfunc.statmod(char_sheet[classfile["magic stat"]])/4)
+        except:
+            pass
 
     elif str(classfile["magic type"]) == "Divine":
         char_sheet["spells per day"] = classfile["level 1"]["spells per day"]
-        char_sheet["spells per day"]["first"] += math.ceil(cfunc.statmod(char_sheet[classfile["magic stat"]])/4)
+        try:  # Try it, because some casters don't have first level spells at first.
+            char_sheet["spells per day"]["1"] += math.ceil(cfunc.statmod(char_sheet[classfile["magic stat"]])/4)
+        except:
+            pass
     else:
         pass
         # Might be tricky, but handle this oddity some other way

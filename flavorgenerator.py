@@ -267,7 +267,7 @@ def pick_deity(alignment):
 
 
 
-def pick_alignment(range):
+def pick_alignment(range, prepicked=False):
     """Given restrictions in 'range', picks an alignment"""
     # Implement some kind of thing in character sheets to restrict alignments...
     # A list, first entry is law to chaos, second is good to evil.
@@ -278,6 +278,10 @@ def pick_alignment(range):
     g2el = ['G', 'N', 'E']
     l2c = range.pop(0)
     g2e = range.pop(0)
+
+    # This is a shitty thing.  There needs to be checking to make sure this is a valid alignment
+    if prepicked is not False:
+        return prepicked
 
     if 'non' in g2e:
         g2el.remove(g2e[4])

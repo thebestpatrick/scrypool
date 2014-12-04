@@ -1,0 +1,40 @@
+alignment:
+- L
+- any
+class skills:
+- Acrobatics
+- Climb
+- Craft
+- Escape artist
+- Intimidate
+- Knowledge (history)
+- Knowledge (religion)
+- Perception
+- Perform
+- Profession
+- Ride
+- Sense Motive
+- Stealth
+- Swim
+prefstats:
+- WS
+- DX
+- ST
+skills per rank: 2
+starting gp: 4d6 × 10 gp
+hit die: 8
+magic type: None
+
+level 1:
+  baseattack: 0
+  fortsave: 2
+  refsave: 2
+  willsave: 2
+  special:
+  - bonus feat # this bonus feat is taken from a list, found on page 59 of the core rules.
+  - flurry of blows
+  - stunning fist
+  - bonus feat: Improved Unarmed Strike
+  - AC bonus 0
+
+

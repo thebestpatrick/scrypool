@@ -1,39 +1,36 @@
 alignment:
-- any
-- any
+- L
+- G
 class skills:
-- Appraise
 - Craft
 - Diplomacy
+- Handle animal
 - Heal
-- Knowledge (arcana)
-- Knowledge (history)
 - Knowledge (nobility)
-- Knowledge (planes)
 - Knowledge (religion)
-- Linguistics
 - Profession
+- Ride
 - Sense Motive
 - Spellcraft
 prefstats:
 - WS
 - CH
+- ST
 skills per rank: 2
 starting gp: 4d6 × 10 gp
-hit die: 8
+hit die: 10
 magic type: Divine
 magic stat: WS
 
 level 1:
-  baseattack: 0
+  baseattack: 1
   fortsave: 2
   refsave: 0
   willsave: 2
   special:
   - aura
-  - channel energy 1d6
-  - domains
-  - orisons
+  - detect evil
+  - smite evil 1
   spells per day:
-    0: 3
-    1: 1
+    0: 0
+

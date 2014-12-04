@@ -44,7 +44,7 @@ level 1:
   - fascinate
   - inspire courage 1
   spells known:
-    zero: 4
-    first: 2
+    0: 4
+    1: 2
   spells per day:
-    first: 1
+    1: 1

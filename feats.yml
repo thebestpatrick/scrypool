@@ -7,7 +7,7 @@
 #    whether fighter bonus is viable here.
 - name: Acrobatics
   score: 0
-  prereqs: nullS
+  prereqs: null
   benefits: +2 bonus on Acrobatics and Fly checks
   tags: 
   - mobility
@@ -64,3 +64,10 @@
   benefits: Create magic potions
   tags:
   - wizard
+- name: Improved Unarmed Strike
+  score: 0
+  prereqs: null
+  benefits: Always considered armed
+  tags:
+  - melee
+  - fighter bonus
