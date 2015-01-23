@@ -220,6 +220,18 @@ def pick_feat(tags, character_file):  # tags is a list
     return [finalchoice, ]
 
 
+def apply_bloodline(character_file):
+    """
+    Does the initial simple application of a bloodline file to a sorcerer's character sheet.
+    """
+    bloodfile = yaml.safe_load(open('classes/misc/bloodlines.yml').read())
+    # Choose a bloodline
+
+    # add that bloodline to the character file
+    # Add the bonus class skills to an appropriate field.
+    #
+
+
 def parse_specials(character_file):
     """
     A function for taking race and class special features, like bonus feat and domains,
@@ -262,7 +274,7 @@ def parse_specials(character_file):
                     pass
             character_file["domains"] = domains
 
-        elif s == "favored enemy": # This favored enemy stuff should be useful later for rogue talents
+        elif s == "favored enemy":  # This favored enemy stuff should be useful later for rogue talents
             # and even the ranger weapon tree.
             deadlist += [s,]
             # Get what is there.  if there is one, add to it.
@@ -283,7 +295,7 @@ def parse_specials(character_file):
                 enemy = random.choice(enemies)
                 # make sure it hasn't been picked before
                 if enemy in current_favored_enemy_info:
-                    # THIS PART IS ALL FUCKED UP....WORK ON IT
+                    # FIXME: THIS PART IS ALL FUCKED UP....WORK ON IT
                     pass
                 else:
                     # apply it
@@ -293,7 +305,9 @@ def parse_specials(character_file):
         # no need to have a bunch of smite 1, smite 2 hanging around
         # elif isinstance(s[-1], int) and s[:-2] in character_file["specials"]:
             # deadlist += [s, ]
-
+        elif s == "bloodline power":
+            # FIXME: needing bloodline handling in general.  Also, all the wizard bullshit
+            pass
         else:
             # stuff
             continue  # doing nothing I guess?
@@ -340,6 +354,8 @@ def pick_domains(domainlist):
 
 
 # Seems rather slow and clunking, will need optimizing
+# would take some work, but running the whole thing as a class might be viable.
+# Might speed it up with 'self' references instead of tossing text blobs around.
 def yaml_create_character(char_race, char_class, mods='none', alignment='pick'):
     """
     Given a race and class, returns a yaml formatted character sheet.
@@ -352,7 +368,7 @@ def yaml_create_character(char_race, char_class, mods='none', alignment='pick'):
     char_sheet = yaml.safe_load("name: " + name + "\n")
     char_sheet["gender"] = gender
     char_sheet["race"] = char_race
-    # char_sheet[ "symbol: " + fg.coatofarms_gen() + "\n"
+
     interclassfile = {char_class: 1}
     char_sheet["class"] = interclassfile
     initstats = kind_stat_roll(char_class)

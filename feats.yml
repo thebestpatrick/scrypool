@@ -71,3 +71,18 @@
   tags:
   - melee
   - fighter bonus
+- name: Scribe Scroll
+  score: 5
+  prereqs:
+    caster level: 1
+  benefits: You can create a scroll of any spell that you know.
+  tags:
+  - item creation
+  - wizard
+- name: Eschew Materials
+  score: 5
+  prereqs:
+    caster level: 1
+  benefits: Cast without the free material components
+  tags:
+  - metamagic

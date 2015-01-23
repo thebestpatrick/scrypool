@@ -1,0 +1,15 @@
+- name: infernal
+  class skill: Diplomacy
+  bloodline arcana: charm
+  # need to implement the bonus spells,
+  bonus feat:
+  - Blind-Fight
+  - Combat Expertise
+  - Deceitful
+  - Extend Spell
+  - Improved Disarm
+  - Iron Will
+  - Skill Focus (knowledge (planes))
+  - Spell Penetration
+  bloodline powers:
+  1: corrupting touch # probably add some kind of descriptor here, or have a file of all spell like abilities, etc

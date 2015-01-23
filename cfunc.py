@@ -118,6 +118,6 @@ def remove_race_stats(initstats, racefile, classfile):
     return initstats
 
 
-## Add a level of a class 
+## Add a level of a class.  Not working yet.
 def add_level(character, char_class):
     return 0
