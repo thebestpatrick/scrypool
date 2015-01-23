@@ -223,13 +223,20 @@ def pick_feat(tags, character_file):  # tags is a list
 def apply_bloodline(character_file):
     """
     Does the initial simple application of a bloodline file to a sorcerer's character sheet.
+    Might not be strictly necessary, could probably take this elsewhere...
     """
     bloodfile = yaml.safe_load(open('classes/misc/bloodlines.yml').read())
     # Choose a bloodline
-
+    blood = random.choice(bloodfile)
     # add that bloodline to the character file
+    character_file['blood line'] = blood['name']
     # Add the bonus class skills to an appropriate field.
+    try:
+        character_file['bonus class skills'] += [blood['class skill'], ]
+    except:
+        character_file['bonus class skills'] = [blood['class skill'], ]
     #
+    character_file['specials'].append(str(blood['bloodline powers'][character_file['class']['sorcerer']]))
 
 
 def parse_specials(character_file):
@@ -305,9 +312,21 @@ def parse_specials(character_file):
         # no need to have a bunch of smite 1, smite 2 hanging around
         # elif isinstance(s[-1], int) and s[:-2] in character_file["specials"]:
             # deadlist += [s, ]
+        # TODO: Bloodline feat for sorcerer leveling up.
         elif s == "bloodline power":
-            # FIXME: needing bloodline handling in general.  Also, all the wizard bullshit
-            pass
+            bloodfile = yaml.safe_load(open('classes/misc/bloodlines.yml').read())
+            try:  # This should work.  its mostly placeholder code for when leveling matters
+                for bla in bloodfile:
+                    if character_file['blood line'] == bloodfile['name']:
+                        character_file['specials'] += bla['bloodline powers'][character_file['class']['sorcerer']]
+                        break
+                    else:
+                        continue
+                bloodfile.close()
+            except:  # This might be an over broad exception instance.
+                apply_bloodline(character_file)
+
+            deadlist += [s, ]
         else:
             # stuff
             continue  # doing nothing I guess?
