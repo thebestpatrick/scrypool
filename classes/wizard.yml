@@ -30,7 +30,7 @@ level 1:
   - [arcane bond object, familiar]  # lots of parse_special implementation required.
   - arcane school  # should be implemented in parse_specials
   spells known:
-    0: 1  # but its only 'read magic'
+    0: 1  # but its only 'read magic', this needs implementing somehow.
   spells per day:
     0: 3
     1: 1

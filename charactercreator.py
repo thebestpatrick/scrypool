@@ -30,8 +30,8 @@ def regular_stat_roll(char_class):  # UNFINISHED....FIXME!
     
     stats = ["ST", "DX", "CN", "WS", "IQ", "CH"]
     # UNFINISHED
-     # basically I want this section to juggle the stats into a proper order for me,
-     # based on the preferred stats of the class
+    # basically I want this section to juggle the stats into a proper order for me,
+    # based on the preferred stats of the class
     prefstats = classfile["prefstats"]
     for i in stats:
         if i in prefstats:
@@ -46,6 +46,8 @@ def kind_stat_roll(char_class):
     """Rolls 3d6, then makes sure that all important stats are above 13"""
     classfile = yaml.safe_load(open('classes/' + char_class + '.yml').read())
     prefstats = classfile["prefstats"]
+
+    arr = []
 
     while True:
         statsok = True
@@ -71,6 +73,9 @@ def extra_kind_stat_roll(char_class):
     """Rolls 4d6, picks best three, then makes sure all the important stats are over 13"""
     classfile = yaml.safe_load(open('classes/' + char_class + '.yml').read())
     prefstats = classfile["prefstats"]
+
+    arr = []
+
     while True:
         arr = [
             roll.best_of(4, 6, 3), roll.best_of(4, 6, 3), roll.best_of(4, 6, 3),
@@ -95,7 +100,7 @@ def lists_overlap(a, b):
     return False
 
 
-## Good format for other prereq checkers
+# Good format for other prereq checkers
 def check_stat_prereqs(prereq, charactersheet):
     """Returns True if the prereqs are met, false if they aren't.  Returns False also on exception"""
     try:
@@ -106,8 +111,8 @@ def check_stat_prereqs(prereq, charactersheet):
             return False
         
     except:
-    # not fond of failing this on an exception...
-    # maybe null instead?
+        # not fond of failing this on an exception...
+        # maybe null instead?
         return False
 
 
@@ -127,7 +132,7 @@ def pick_feat(tags, character_file):  # tags is a list
     except:
         charfeats = []
     for f in feats:
-        ## rank f
+        # rank f
         rank = f["score"]
         # make sure its not already picked
         try:
@@ -140,7 +145,7 @@ def pick_feat(tags, character_file):  # tags is a list
         if "fighter bonus" in tags and "fighter bonus" not in f["tags"]:
             continue
 
-        ## check prereqs
+        # check prereqs
 
         try:
             if f["prereqs"]["caster level"] > cfunc.get_caster_level(character_file):
@@ -190,12 +195,12 @@ def pick_feat(tags, character_file):  # tags is a list
                 passing.append(False)
         if False in passing:
             continue
-        ## end of prereq checking
+        # end of prereq checking
 
         for x in tags:
-        # moved all but the first entry here in to this loop.  Not sure why they were out of
-        # the loop, but maybe there was a reason.  In any case, they are in now, so any odd errors
-        # might be traced to here I guess.
+            # moved all but the first entry here in to this loop.  Not sure why they were out of
+            # the loop, but maybe there was a reason.  In any case, they are in now, so any odd errors
+            # might be traced to here I guess.
             if x in f["tags"]:
                 rank += 10  # add ten for every matching tag.
 
@@ -207,7 +212,7 @@ def pick_feat(tags, character_file):  # tags is a list
             if f["name"] in tags:
                 rank += 175
 
-            ## end of rankings, make call
+            # end of rankings, make call
             if rank > ranktobeat:
                 finalchoice = f["name"]
                 ranktobeat = rank
@@ -225,6 +230,7 @@ def apply_bloodline(character_file):
     Does the initial simple application of a bloodline file to a sorcerer's character sheet.
     Might not be strictly necessary, could probably take this elsewhere...
     """
+    # TODO: merge this into the same section as parse_specials.
     bloodfile = yaml.safe_load(open('classes/misc/bloodlines.yml').read())
     # Choose a bloodline
     blood = random.choice(bloodfile)
@@ -244,6 +250,9 @@ def parse_specials(character_file):
     A function for taking race and class special features, like bonus feat and domains,
     and turning them into the thing that they mean, then returning the proper list of specials.
     """
+    # TODO: This is kind of a terrible way to do it, but decent for the beginning.  These specific functions should be
+    # torn out and moved to a file, so that adding new specials does not require you to come in here and muck around
+    # in the guts of the server.  This will probably require a code branch for testing and bullshit...
     deadlist = []
     mods = []  # probably add a section that can allow people to add tags to their character sheet
     for s in character_file["specials"]:
@@ -262,7 +271,7 @@ def parse_specials(character_file):
         if s == "bonus feat":
             # pick a generic bonus feat
             deadlist += [s, ]
-            character_file["feats"] += pick_feat(mods, character_file)  # FIXME maybe get tags arg 1?
+            character_file["feats"] += pick_feat(mods, character_file)  # TODO: Tags in character file.
 
         elif s == "fighter bonus feat":
             # pick a fighter bonus feat
@@ -283,7 +292,7 @@ def parse_specials(character_file):
 
         elif s == "favored enemy":  # This favored enemy stuff should be useful later for rogue talents
             # and even the ranger weapon tree.
-            deadlist += [s,]
+            deadlist += [s, ]
             # Get what is there.  if there is one, add to it.
             try:
                 current_favored_enemy_info = character_file["favored enemies"]
@@ -356,7 +365,7 @@ def pick_init_skills(character_file, class_skills):
     while x < skill_points:
         # Get new class skills
         skills[class_skills.pop()] = 1
-        # FIXME might get an error here with more skill points than skills
+        # FIXME: might get an error here with more skill points than skills
         # Pick random skills?  should never happen
         x += 1
     return skills
@@ -382,6 +391,7 @@ def yaml_create_character(char_race, char_class, mods='none', alignment='pick'):
     alignment should be in the 'CG' style or 'pick'. other inputs WILL be stupid.
     """
     genders = ["m", "f"]
+    # unchanged
     gender = random.choice(genders)
     name = fg.gen_name(gender, char_race)
     char_sheet = yaml.safe_load("name: " + name + "\n")
@@ -392,8 +402,8 @@ def yaml_create_character(char_race, char_class, mods='none', alignment='pick'):
     char_sheet["class"] = interclassfile
     initstats = kind_stat_roll(char_class)
     
-    ## Open the needed files and make sure they work before we go farther
-    ## Should probably, at some point, move these to a database access system.
+    # Open the needed files and make sure they work before we go farther
+    # Should probably, at some point, move these to a database access system.
 
     racefile = yaml.safe_load(open('races/' + char_race + '.yml').read())
 
@@ -401,9 +411,9 @@ def yaml_create_character(char_race, char_class, mods='none', alignment='pick'):
 
     char_sheet["base attack"] = classfile["level 1"]["baseattack"]
 
-    ## Apply Racial Bonuses
+    # Apply Racial Bonuses
     adstats = cfunc.apply_race_stats(initstats, racefile, classfile)
-    ## Make sure all of the stat values are possible.
+    # Make sure all of the stat values are possible.
     a = 0
     stats = ["ST", "DX", "CN", "WS", "IQ", "CH"]
     for i in adstats:
@@ -424,12 +434,10 @@ def yaml_create_character(char_race, char_class, mods='none', alignment='pick'):
     # should probably add weapon proficiencies in at this point too.
     # this will require adding them to the class sheets.
     char_sheet["feats"] = pick_feat(mods, char_sheet)
-    
-    ##
-    ## this section could be chopped out and moved to the 'level up' function, since its just
-    ## adding a level one of a class to an existing character. Or it could handle it here 
-    ## since it is kind of unique handling at level one.  
-    ## 
+
+    # this section could be chopped out and moved to the 'level up' function, since its just
+    # adding a level one of a class to an existing character. Or it could handle it here
+    # since it is kind of unique handling at level one.
     
     char_sheet["total hp"] = classfile["hit die"] + cfunc.nstatmod(adstats[2])
     char_sheet["current hp"] = classfile["hit die"] + cfunc.nstatmod(adstats[2])

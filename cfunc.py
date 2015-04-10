@@ -1,5 +1,5 @@
 #!/usr/bin/python3.3
-## A holding file for misc. character related files.
+# A holding file for misc. character related files.
 
 import roll
 import random
@@ -92,7 +92,7 @@ def statmod(stat):
 
 def nstatmod(stat):
     """Like statmod() but less than zero is zero"""
-    a = math.floor( (stat-10) / 2)
+    a = math.floor((stat-10) / 2)
     if a <= 0:
         return 0
     else:
@@ -118,6 +118,6 @@ def remove_race_stats(initstats, racefile, classfile):
     return initstats
 
 
-## Add a level of a class.  Not working yet.
+# Add a level of a class.  Not working yet.
 def add_level(character, char_class):
     return 0

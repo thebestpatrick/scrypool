@@ -3,4 +3,4 @@
 from charactercreator import yaml_create_character
 import yaml
 
-print(yaml.dump(yaml_create_character("human", "sorcerer"), default_flow_style=False))
+print(yaml.dump(yaml_create_character("human", "wizard"), default_flow_style=False))
